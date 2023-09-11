@@ -29,7 +29,7 @@ mailRouter.get('/',uploader.single("thumbnail"), async(req,res)=>{
   /*           attachments:[
                 {
                     filename:"gracias.gif",
-                    path:req.file.path,
+                    path:req.file.filename,
                     cid:"gracias"
                 },
             ] */

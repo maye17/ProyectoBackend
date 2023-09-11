@@ -1,6 +1,4 @@
 node_modules
 note.txt
-.env.development
-.env.production
-env.production
-env.development
+/.env.development
+/.env.production

@@ -1,0 +1,60 @@
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+        <a href="/"><img 
+            src="/images/COMPU-GADBIZZLogo.png"
+            alt="logo"
+            style="width: 80px;"
+        /></a>
+    <form class="d-flex justify-content-center" role="search">
+      <input class="form-control form-control-sm px-2" id="buscador" type="text" placeholder="Buscar productos..." aria-label="Search">
+      <button class="btn btn-outline-dark" type="submit" id="btnBuscar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg></button>
+    </form>
+  </div>
+</nav>
+<div class="container">
+    <div class="mt-2">
+        <h2>Formulario de productos</h2>
+    </div>
+    <div class="formulario">
+    <form id="form-product">
+          <div class="mb-2 mt-2">
+              <input id="input-title" class="form-control" type="text" placeholder="titulo" aria-label=".form-control-lg example">
+          </div>
+             <div class="mb-2">
+              <input 
+              id="description" 
+              class="form-control" 
+              type="text" 
+              placeholder="descripción" 
+              aria-label=".form-control-lg example"
+              />
+          </div>
+             <div class="mb-2">
+              <input id="input-price" class="form-control" type="number" placeholder="precio" aria-label=".form-control-lg example">
+          </div>
+             <div class="mb-2">
+              <input id="input-img" class="form-control" type="text" placeholder="Url de imagen" aria-label=".form-control-lg example">
+          </div>
+              <div class="mb-2">
+              <input id="input-marca" class="form-control" type="text" placeholder="Marca" aria-label=".form-control-lg example">
+          </div>
+            <div class="mb-2">
+              <input id="input-code" class="form-control" type="text" placeholder="código" aria-label=".form-control-lg example">
+          </div>
+                  <div class="mb-2">
+              <input id="input-stock" class="form-control" type="number" placeholder="stock" aria-label=".form-control-lg example">
+          </div>
+            <div class="mb-2">
+              <input id="input-date" class="form-control" type="date" placeholder="Fecha" aria-label=".form-control-lg example">
+          </div>
+          <div class="btn-form">
+              <button id="btn-add" type= 'button' class="btn btn-primary">Agregar</button>
+          </div>
+
+    </form>
+    </div>
+</divZ>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

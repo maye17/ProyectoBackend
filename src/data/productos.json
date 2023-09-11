@@ -1,0 +1,76 @@
+{
+  "products": [
+    {
+      "title": "Camisa De Hombre Slim Fit",
+      "description": "Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",
+      "price": 40,
+      "thumbnail": "https://livemultimarca.mercadoshops.com.ar/MLA-727398273-camisa-lacoste-aeq-casual-lino-lisa-celeste-g5j-blanco-001-_JM#&gid=1&pid=1",
+      "code": "lacoste432",
+      "stock": 12,
+      "id": 1
+    },
+    {
+      "title": "Camisa De Hombre Regular Fit",
+      "description": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "price": 30,
+      "thumbnail": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "code": "lacoste367",
+      "stock": 12,
+      "id": 2
+    },
+    {
+      "title": "Camisa De Hombre Slim Fit",
+      "description": "Camisa De Hombre Slim Fit, Cuello camisero abotonado, Ajustado, Punta de puntilla de algodón premium, Botones de nácar, Insignia de cocodrilo verde en el pecho, Cotton (100%)",
+      "price": 38,
+      "thumbnail": "https://livemultimarca.mercadoshops.com.ar/MLA-727398273-camisa-lacoste-aeq-casual-lino-lisa-celeste-g5j-blanco-001-_JM#&gid=1&pid=1",
+      "code": "lacoste123",
+      "stock": 15,
+      "id": 3
+    },
+    {
+      "title": "Camisa De Hombre Regular Fit",
+      "description": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "price": 30,
+      "thumbnail": "https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01",
+      "code": "lacoste368",
+      "stock": 12,
+      "id": 4
+    },
+    {
+      "title": "Camisa De Hombre Regular Fit",
+      "description": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "price": 30,
+      "thumbnail": "https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01",
+      "code": "lacoste368",
+      "stock": 12,
+      "id": 5
+    },
+    {
+      "title": "Camisa De Hombre Regular Fit",
+      "description": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "price": 30,
+      "thumbnail": "https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01",
+      "code": "lacoste368",
+      "stock": 12,
+      "id": 6
+    },
+    {
+      "title": "Camisa De Hombre Regular Fit",
+      "description": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "price": 30,
+      "thumbnail": "https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01",
+      "code": "lacoste368",
+      "stock": 12,
+      "id": 7
+    },
+    {
+      "title": "Camisa De Hombre Regular Fit",
+      "description": "Camisa De Hombre Regular Fit, Cuello corto abotonado, Ajuste regular, Punta de puntilla de algodón premium, Cocodrilo verde bordado en el pecho, Cotton gabardine:, Stretchy and comfortable., Algodón (100%)",
+      "price": 30,
+      "thumbnail": "https://www.lacoste.com/ar/lacoste/hombre/ropa/camisas/camisa-de-hombre-regular-fit/CH6511-23.html?color=T01",
+      "code": "lacoste368",
+      "stock": 12,
+      "id": 8
+    }
+  ]
+}  

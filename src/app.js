@@ -28,7 +28,8 @@ const authAdminRouter = require("./routes/authadmin.router.js");
 const AllUserRouter = require("./routes/alluser.router.js");
 const userProductRouter = require("./routes/userProduct.router.js");
 const cartRouter = require("./routes/cart.router.js")
-const config = require('../src/config/config.js')
+const config = require('../src/config/config.js');
+const mailRouter = require("./routes/mail.router");
 
 console.log(config)
 
@@ -99,6 +100,7 @@ app.use('/carts', cartRouter)
 app.use('/access',userProductRouter)
 
 app.use('/api/sessions', sessionsRouter);
+app.use('/mail', mailRouter)
 //No usar solo prueba
 /* app.use('/', loginRouter); */
 

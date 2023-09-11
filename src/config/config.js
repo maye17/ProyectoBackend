@@ -22,7 +22,9 @@ const config = {
   ttl: process.env.TTL,
   secret:process.env.SECRET,
   resave:process.env.RESAVE,
-  saveUninitialized:process.env.SAVEUNINITIALIZED
+  saveUninitialized:process.env.SAVEUNINITIALIZED,
+  googleEmail: process.env.GOOGLE_EMAIL,
+  googlePass: process.env.GOOGLE_PASS
 };
 
 console.log('Valor de PORT:', config.port);

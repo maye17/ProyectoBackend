@@ -64,6 +64,8 @@ ul, li {
     font-size: 30px;
     padding-left: 10px;
     cursor: pointer;
+    display: flex;
+    
   }
   .back img {
     position: absolute;
@@ -77,6 +79,13 @@ ul, li {
     -moz-border-radius: 100%;
     -ms-border-radius: 100%;
     margin-left: 15px;
+    }
+
+    .back a {
+      display: flex;
+      align-content: space-between;
+      flex-flow: column wrap;
+
     }
   .back:active {
     background: rgba(255,255,255,0.2);

@@ -175,6 +175,41 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+//Agregando productos al carrito 
+
+function agregarAlCarrito(productId) {
+  fetch('/:cid/product/:pid', {
+    method: 'POST',
+    body: JSON.stringify({ productId }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Manejar la respuesta del servidor, por ejemplo, mostrar un mensaje al usuario.
+      console.log(data.message);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //renderizar la tabla de productos
 
 

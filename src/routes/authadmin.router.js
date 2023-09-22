@@ -44,6 +44,6 @@ authAdminRouter.post("/",passport.authenticate('users', { failureRedirect: '/aut
         }
     
     })
-    
+
 
     module.exports = authAdminRouter;

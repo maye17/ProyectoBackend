@@ -11,7 +11,7 @@ const Userschema = new Schema({
     },
     lastName:{
         type: String,
-        required:true,
+        required:false,
         max:100,
     },
     email: {
@@ -41,6 +41,14 @@ const Userschema = new Schema({
         max:100,
     },
     
+    resetPasswordToken:{
+        type:String,
+        required:false,
+    } ,
+    resetPasswordExpires: {
+        type: Date,
+        required:false,
+    },
 
 });
 

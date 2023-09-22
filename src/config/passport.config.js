@@ -5,13 +5,15 @@ const passportGithub= require('passport-github2');
 const GitHubStrategy = passportGithub.Strategy;
 const UserService = require('../services/user.service.js');
 const hashPassword = require('../utils/hashPassword.js');
-const usersModel = require('../models/mongoose/user.model.js');
+const userModel = require('../models/mongoose/user.model.js');
+const mongoose = require('mongoose')
 const createHash = require('../utils/createHash.js');
 const validatePassword = require("../utils/validatePassword.js")
 const fetch = require('node-fetch');
-
+const CartControllers = require("../controllers/cart.controller.js");
+const cartControllers = new CartControllers();
 const iniPassport = () => {
-
+    const ObjectId = mongoose.Types.ObjectId;
     const userService = new UserService();
  //paspsort local
  passport.use(
@@ -23,7 +25,7 @@ const iniPassport = () => {
         },
         async (username, password, done) => {
             try {
-                const user = await usersModel.findOne({email:username})
+                const user = await userModel.findOne({email:username})
                 if (!user) {
                     console.log('no se encontro el usuario' +  username)
                     return done(null, false, { message: 'Incorrect email.' });
@@ -54,7 +56,7 @@ passport.use(
 
             try {
                 const { email, firstName, lastName, usuario } = req.body;
-                let user = await usersModel.findOne({email:username})
+                let user = await userModel.findOne({email:username})
                 if (user) {
                     console.log('el usuario ya existe')
                     return done(null, false, { message: 'User already exists' });
@@ -68,7 +70,7 @@ passport.use(
                         usuario,
                        
                     }
-                    let userCreated = await usersModel.create(newUser);  
+                    let userCreated = await userModel.create(newUser);  
                     console.log(userCreated);
                     console.log('user registration succesful');
                     return done(null, userCreated);
@@ -92,6 +94,7 @@ passport.use(
             callbackURL: 'http://localhost:8080/api/sessions/githubcallback',
         },
         async (accessToken, _, profile, done) => {
+           
             try {
                 const res = await fetch('https://api.github.com/user/emails', {
                     headers: {
@@ -103,32 +106,38 @@ passport.use(
                   const emails = await res.json();
                   const emailDetail = emails.find((email) => email.verified == true);
         
-        
+           
                 if(!emailDetail){
                     return done(new error('No se pudo obtener el email del usuario'));
                 }
                 profile.emails = emailDetail.email;
-                let user = await usersModel.findOne({email:profile.email});
+                let user = await userModel.findOne({email:profile.email});
                 console.log('los datos del usuario',user)
                 if (!user) {
 
                     const newUser = {
+                  
                         email:profile.email,
                         firstName:profile._json.name || profile._json.login || 'noname',
                         lastName:"nolastname",
                         isAdmin:false,
                         password:"nopassword",
                         usuario:profile._json.login || 'noname',
+                        resetPasswordToken:null,
+                        resetPasswordExpires:null
                     }  
 
                     //creando el usuario
                     let userCreated = await userModel.create(newUser);
                     console.log("usuario registrado con exito",userCreated)
-                    return done(null, userCreated);
+                    await userCreated.save();
+                
+             
                 } else {
-                    console.log("usuario logueado",user)
+                    
+                   console.log("usuario logueado",user)
                     return done(null, user);
-                }
+               }
                 
             } catch (error) {
                 console.log('error con github')
@@ -145,7 +154,7 @@ passport.serializeUser((user, done) => {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let user = await usersModel.findById(id);
+    let user = await userModel.findById(id);
     done(null, user);
   });
 }

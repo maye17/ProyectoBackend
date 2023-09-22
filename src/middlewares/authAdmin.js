@@ -8,6 +8,8 @@ function isAdmin(req, res, next) {
 
     return res.status(403).render('error', { error: 'error de autorización!' });
   }
+
+
 module.exports = isAdmin;   
 
 //redireccionando a una pagina de error

@@ -39,7 +39,7 @@ async AllPassword (){
 }
 
 
-    async addUser (email,firstName,lastName,password,usuario){
+/*     async addUser (email,firstName,lastName,password,usuario){
        
    
         try {
@@ -50,8 +50,18 @@ async AllPassword (){
          catch (error) {
             throw error;
         }
-    }
+    } */
 
+    async addUser(dato){
+        try {
+            const result = await usersModel.create(dato)
+            return result;
+
+        } catch (error) {
+            throw error;
+            
+        }
+    }
 
     async addUserGitHub (email,firstName,lastName,usuario){
        

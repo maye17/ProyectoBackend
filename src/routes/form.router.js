@@ -8,8 +8,6 @@ form.get('/',  (req,res)=>{
 
     res.status(200).render('formulario')
     
-  
-   
 })
 
 module.exports = form;

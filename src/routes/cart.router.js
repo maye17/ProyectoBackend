@@ -3,14 +3,23 @@ const express = require ("express");
 const products = new Modelproducts(); */
 
 const CartControllers = require('../controllers/cart.controller.js');
+const isUser = require("../middlewares/authUser.js");
+const isLogin = require("../middlewares/authLogin.js");
 const cartControllers = new CartControllers ()
 
 const cartRouter = express.Router();
 
-cartRouter.get("/", cartControllers.getAllCart);
+cartRouter.post("/", cartControllers.createCart);
 cartRouter.get("/:cid", cartControllers.getCartById);
-cartRouter.get("/:cid/:uid", cartControllers.getCartByUserId)
-cartRouter.post("/:cid/product/:pid", cartControllers.addProductTOCart);
+//cartRouter.put('/:cid/product/:pid', addProductTOCart)
+//cartRouter.post("/:cid/product/:pid", cartControllers.addProductTOCart);
+//cartRouter.get('/agregar-carrito/:cid',cartControllers.getProductToCart)
+cartRouter.post("/:cid/product/:pid", isLogin, cartControllers.addProductTOCart);
+
+cartRouter.get('/products',isLogin,cartControllers.FindProductCart)
+//cartRouter.get('/cid/purchase', cartControllers.Add)
+
+
 /* cartRouter.post("/", cartControllers.createCart);
 cartRouter.put("/", cartControllers.updateCart);
 cartRouter.delete("/", cartControllers.deleteCart); */

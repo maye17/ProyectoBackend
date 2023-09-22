@@ -1,8 +1,10 @@
-
+//@ts-check
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
 //const port =8080;
+/* const ProductManager = require("./dao/ProductManager.js");
+const productos = new ProductManager ("productos.json"); */
 const productsRouter = require("./routes/products.api.router");
 const cartsRouter = require("./routes/cartsapi.router.js");
 const { Server } = require("socket.io");
@@ -10,8 +12,6 @@ const realTimeProducts = require("./routes/realtimeproducts.js");
 const authRouter = require("./routes/auth.router.js")
 const sessionsRouter = require("./routes/sessions.router.js");
 const loginRouter = require("./routes/login.router.js");
-/* const ProductManager = require("./dao/ProductManager.js");
-const productos = new ProductManager ("productos.json"); */
 const form = require('./routes/form.router.js');
 const connectMongo = require("./utils/mongo");
 const principalRouter = require("./routes/product.router.js");
@@ -29,8 +29,9 @@ const AllUserRouter = require("./routes/alluser.router.js");
 const userProductRouter = require("./routes/userProduct.router.js");
 const cartRouter = require("./routes/cart.router.js")
 const config = require('../src/config/config.js');
-const mailRouter = require("./routes/mail.router");
-
+const mailRouter = require("./routes/mail.api.router");
+const sendMail = require("./routes/mail.router");
+const bodyParser = require('body-parser');
 console.log(config)
 
 const port = config.port;
@@ -65,7 +66,8 @@ app.use(
     store:MongoStore.create({mongoUrl:config.mongoUrl, ttl:config.ttl}),
     secret:config.secret,
     resave:config.resave,
-    saveUninitialized:config.saveUninitialized
+    saveUninitialized:config.saveUninitialized,
+    //cookie: { sameSite: 'strict' },
 })
 )
 /* app.use(
@@ -78,17 +80,20 @@ app.use(
       saveUninitialized: true,
     })
   ); */
-//TODO LO DE PASSPORT
+
+// PASSPORT
 iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// rutas api JSON
+// Rutas api JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter); //solo para api del carrito
-app.use('/access/hAdmin', authAdminRouter)
+//app.use('/access/Admin', authAdminRouter)
+app.use('/access',authAdminRouter)
+    
 
-
+//app.use('/access , authAdminRouter)
 // Rutas: HTML Render
 
 app.use("/formulario", form);
@@ -98,14 +103,15 @@ app.use('/admin', adminRouter);
 app.use('/users', AllUserRouter);
 app.use('/carts', cartRouter)
 app.use('/access',userProductRouter)
+app.use('/api/forgetPassword',sendMail)
 
 app.use('/api/sessions', sessionsRouter);
-app.use('/mail', mailRouter)
+app.use('/send', mailRouter)
+
 //No usar solo prueba
 /* app.use('/', loginRouter); */
 
-
-//Rutas: Sockets
+//---Rutas: Sockets----
 
 app.use("/realTimeProducts", realTimeProducts)
 app.use("/", principalRouter)
@@ -123,9 +129,16 @@ app.get("*"), (req, res) => {
         })
 }
 
+
+//---------Ruta para Mocking----------
+
+//app.use('/mockingproducts')
+
+
+
  
-// solicitando id del pedido
-app.get(`/products/:pid`, async (req,res)=>{
+//-------------- solicitando id del pedido------------------------
+/* app.get(`/products/:pid`, async (req,res)=>{
     try {
         const idPedido = parseInt(req.params.pid) ;
     const idSolicitado = await productos.getProductById(idPedido);
@@ -141,3 +154,4 @@ app.get(`/products/:pid`, async (req,res)=>{
             throw new Error(error.message)
     }
 })
+ */

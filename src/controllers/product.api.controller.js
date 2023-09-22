@@ -1,6 +1,6 @@
 /* const ProductService = require('../services/product.api.service');
 const productsService = new ProductService(); */
-const Factory = require('../dao/factory');
+const Factory = require('../DAO/factory');
 const factory = new Factory()
 
 class ProductsController {

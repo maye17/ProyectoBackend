@@ -1,10 +1,11 @@
 const express = require ("express");
-const mensaggeService = require('../services/message.service')
+const mensaggeService = require('../services/message.service');
+const isUser = require("../middlewares/authUser");
 const MesaggeService = new mensaggeService();
 
 
 const chatRouter = express.Router();  
-chatRouter.get('/', async (req, res) => {
+chatRouter.get('/', isUser, async (req, res) => {
     try {
 
         return res.render('chat', {})
@@ -32,7 +33,7 @@ chatRouter.post('/', async(req,res)=>{
 })
  */
 
-chatRouter.post('/', async(req,res)=>{
+chatRouter.post('/',isUser, async(req,res)=>{
     try {
 
         const {user, message} = req.body;

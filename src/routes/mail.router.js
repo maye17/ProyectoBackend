@@ -1,44 +1,45 @@
+
+
 const express = require('express');
 const nodemailer = require('nodemailer');
-const uploader = require('../utils/utils')
+const config = require('../config/config');
 
-const mailRouter = express.Router();
+const sendMail = express.Router();
+
 
 const transport = nodemailer.createTransport({
-    service:"gmail",
-    port:587,
+    service:config.serviceMail,
+    port:config.portMail,
     auth:{
-        user:process.env.GOOGLE_EMAIL,
-        pass: process.env.GOOGLE_PASS,
+       user:config.googleEmail,
+       pass:config.googlePass
     },
 });
 
-mailRouter.get('/',uploader.single("thumbnail"), async(req,res)=>{
-    const {__dirname}=uploader;
 
+sendMail.get('/', async(req,res)=>{
     try {
+        
+        const email = req.query.email;
+        const resetPasswordLink = 'https://localhost:8080/reset-password';
         const result= await transport.sendMail({
             from: process.env.GOOGLE_EMAIL,
-            to:"mayerlin.dossantos@gmail.com",
-            subject:"Veamos este a ver si anda",
-            html:`
-            <div>
-                <h1>Hola enviando mail desde el programa</h1>
-                <img src="cid:gracias" />
-            </div>`,
-  /*           attachments:[
-                {
-                    filename:"gracias.gif",
-                    path:req.file.filename,
-                    cid:"gracias"
-                },
-            ] */
+            to:email,
+            subject:"Olvido de contraseña",
+            template:resetPasswordLink,
+            context:{
+                resetLink:resetPasswordLink
+            }
+       ,
         })
-        res.send('Correo enviado correctamente');
+        console.log(result)
+        res.send('Correo enviado correctamente'); 
     } catch (error) {
-        res.status(500).send('Error al enviar el correo');
+        throw error
     }
+
+
 
 })
 
-module.exports = mailRouter;
+module.exports = sendMail;

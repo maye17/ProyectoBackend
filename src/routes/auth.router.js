@@ -1,40 +1,45 @@
 const express = require("express");
 
-const isUser = require("../middlewares/authUser.js");
-const isAdmin = require("../middlewares/authAdmin.js")
+const isAdmin = require('../middlewares/authAdmin')
+const isUser = require('../middlewares/authUser')
 const passport = require('passport');
 const UserProfileController = require('../controllers/user.controler.js')
 const controllerUser  = new UserProfileController();
 const authRouter = express.Router();
 const authController = require("../controllers/auth.controller.js");
-
+const UserService = require("../services/user.service.js");
+const isLogin = require("../middlewares/authLogin");
+const serviceUser = new UserService();
 
 
 //CONTROL DE ACCESO DE USUARIOS
-authRouter.get("/user",isUser, controllerUser.getUserAll);
+authRouter.get("/user", isUser, controllerUser.getUserAll);
 authRouter.get("/administracion", isAdmin, controllerUser.getAdmin);   
 
 
 // LOGIN CON PASSPORT
     authRouter.get("/login", authController.renderLoginPage);
 
-    authRouter.post("/login",
-    passport.authenticate('login', { failureRedirect: '/auth/faillogin' }),
+    authRouter.post("/login", passport.authenticate('login', { failureRedirect: '/auth/faillogin' }),
     (req,res,next) => {
 
-        if(req.user && req.user.isAdmin===false){
-            isUser(req,res,next);
-            console.log("Acceso de usuario validado")
-        }else if(req.user && req.user.isAdmin===true){
-            isAdmin(req,res,next);
-            console.log("Acceso de administración validado");
-        }else{
-            res.redirect('/auth/faillogin')
-        }
+            if(req.user && req.user.isAdmin===false){
+                console.log("Acceso de usuario validado")
+                isUser(req,res,next);
+            
+            }else if(req.user && req.user.isAdmin===true){
+                console.log("Acceso de administración validado");
+                isAdmin(req,res,next);
+            
+            }else{
+                res.redirect('/auth/faillogin')
+            }
 
     },
     
+    
     authController.handleSuccessfulLogin
+    
 );
 
 
@@ -57,7 +62,8 @@ authRouter.post("/register",passport.authenticate('register', { failureRedirect:
 
         req.session.user = { _id: req.user._id, email: req.user.email, firstName: req.user.firstName, lastName: req.user.lastName, isAdmin: req.user.isAdmin, usuario: req.user.usuario };
 
-        return res.redirect('/access/user')
+        return res.redirect(`/access/user/`)
+        //return res.redirect(`/access/user/${_id}`)
  
     });
 
@@ -89,10 +95,16 @@ authRouter.post("/register",passport.authenticate('register', { failureRedirect:
         if (err) {
             return res.json({ status: 'error', msg: 'Error in logout', payload: {} });
         }
+
+        console.log('user logout')
         res.clearCookie('connect.sid');
         return res.redirect('/auth/login');
         });
-})
 
+    })
+
+    //CURRENT
+
+  authRouter.get('/current', authController.getCurrentUser);
 
 module.exports = authRouter;

@@ -3,6 +3,8 @@ const CartModel = require('../models/mongoose/cart.model');
 
 const mongoose = require('mongoose');
 const userModel = require('../models/mongoose/user.model');
+const productsModel = require('../models/mongoose/products.model');
+
 class CartService {
     
     async getAllCart (){
@@ -42,7 +44,7 @@ class CartService {
 
     async getCartById(cartId) {
         try {
-            const cart = await CartModel.findById(cartId)
+            const cart = await CartModel.findById({_id:cartId})
             console.log(cart);
             return cart;
         } catch (error) {
@@ -66,22 +68,35 @@ class CartService {
 
     async addProductToCart (cartId, productId) {
 
-
- 
         try {
-            const cart = await CartModel.findOne({ _id: cartId });
-            console.log(productId)
-            const objectId = new  mongoose.Types.ObjectId(productId);
-            const filter = { _id: objectId };
+           /*  if (!usuarioId || usuarioId === null) {
+                throw new Error('UsuarioId no válido');
+              }
+           */
+            const cart = await CartModel.findOne({_id:cartId});
+            console.log('id del carrito',cart)
             if (!cart) {
-                console.log('Cart not found');
-                return;
+                throw new Error('Carrito no encontrado');
             }
-
-            const existProductInart = cart.products.find(product => product.filter === productId);
+    
+        
+            /* if (!cart) {
+                // Si no se encuentra el carrito, puedes crearlo aquí si es necesario.
+                const newCart = new CartModel({ productId });
+                await newCart.save();
+                return newCart; // Devolver el carrito recién creado si es necesario.
+              } */
+          
+            const existProductInart = cart.products.find(product => product.productId === productId);
             if (existProductInart) {
                 console.log('Product already exists in cart');
                 existingProduct.quantity += 1;
+
+                return res.json({
+                    status:'success',
+                    message:'producto agregado con cantidad',
+                    payload:cart
+                })
             } else {
 
             cart.products.push({productId, quantity: 1});
@@ -96,6 +111,26 @@ class CartService {
             }
     }
 
+    async  obtenerProductosDelCarrito(userId) {
+        // Aquí debes implementar la lógica para obtener los productos en el carrito del usuario.
+        // Esto podría implicar consultas a una base de datos u otro almacenamiento de datos.
+        // Por simplicidad, aquí simularemos un carrito de ejemplo.
+        
+        // Supongamos que tienes una variable global "carritos" que contiene los datos de carrito de los usuarios.
+        // Cada entrada en "carritos" podría tener una estructura como esta:
+        // { userId: 1, productos: [{ id: 1, name: 'Producto 1', price: 10.99, cantidad: 2 }, ...] }
+        
+        // Busca el carrito del usuario por su ID.
+        const carritoDelUsuario = carritos.find(carrito => carrito.userId === userId);
+        
+        if (carritoDelUsuario) {
+            // Si se encuentra el carrito del usuario, devuelve los productos en el carrito.
+            return carritoDelUsuario.productos;
+        } else {
+            // Si el usuario no tiene un carrito, devuelve un carrito vacío.
+            return [];
+        }
+    }
 
 
 

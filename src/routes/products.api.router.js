@@ -4,7 +4,7 @@ const uploader = require("../utils/utils.js");
  
 const ProductsController  = require("../controllers/product.api.controller.js")
 const productsController = new ProductsController();
-const Factory = require('../dao/factory.js')
+const Factory = require('../DAO/factory.js')
 
 const productsRouter = express.Router();
 

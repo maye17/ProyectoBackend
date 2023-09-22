@@ -5,7 +5,7 @@ const {Schema, model} = require('mongoose')
   const cartSchema = new Schema({
  
     usuarioId:String,
-    
+/*     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' }, */
     products: [
       {
         productId:{

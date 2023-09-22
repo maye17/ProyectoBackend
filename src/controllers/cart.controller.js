@@ -1,6 +1,7 @@
 const CartService = require('../services/cart.service.js')
 const cartService = new CartService()
-
+const mongoose = require('mongoose');
+const CartModel = require('../models/mongoose/cart.model.js')
 class CartControllers {
 
     async  getAllCart(req,res){
@@ -20,7 +21,7 @@ class CartControllers {
 
     }
 
-
+/* 
 async getCartByUserId(req,res){
     try {
         const userId = req.params.uid;
@@ -32,11 +33,43 @@ async getCartByUserId(req,res){
     } catch (error) {
     throw error;
 }
+} */
+
+async getCartByUserId(userId){
+    try {
+        
+        const cart = await cartService.getCartByUserId(userId);
+        
+        res.status(200).json({
+            status: 'success',
+            payload: cart
+        });
+    } catch (error) {
+    throw error;
+}
 }
 
-    async createCart(userId) {
+async createCartLogin(userId) {
+    try {
+    
+     const cartid = await cartService.createCart(userId);
+        return cartid;
+       
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+    async createCart(req,res) {
         try {
-            await cartService.createCart(userId);
+            const usuarioId = req.body.uid;
+         const cartid = await cartService.createCart(usuarioId);
+            res.status(200).json({
+                status: 'success',
+                payload: cartid
+            })
 
            
         } catch (error) {
@@ -44,30 +77,29 @@ async getCartByUserId(req,res){
         }
     }
 
-     /*    try {
-            const cartId = req.params.cid;
-            const productIds = req.body.productIds;
-            const updatedCart = await cartService.addProductToCart(cartId, productIds);
-            return res.status(200).json({
-                status:"success",
-                msg:"Exitoso",
-                payload:updatedCart
-            })
-        } catch (error) {
-            throw error;
-        } */
+//para memoria
+/*         async addProductTOCart (req,res ){
 
-        async addProductTOCart (req,res ){
-        //const { cartId, productIds } = req.body;
-        const cartId = req.params.cid;
         const productId = req.params.pid;
-          //  const productId= req.params.pid;
+        console.log('id del producto',productId)
 
         try {
-            const updatedCart = await cartService.addProductToCart(cartId, productId);
-            res.json(updatedCart);
+            req.session =req.session || {};
+            console.log('usuario en sesión',req.session)
+  
+          const usuarioId = req.user; 
+          //obteniendo el usuarioId de la session de passport
+          if (!usuarioId) {
+            throw new Error('El usuario no tiene un usuarioId en la sesión.');
+          }
+      
+          // Ahora puedes usar usuarioId en tu consulta a la base de datos
+          req.session.carrito = await CartModel.findOne({ usuarioId }) || [];
+          req.session.carrito.push(productId);
+      
+          res.json({ message: 'Producto agregado al carrito' });
+    
 
-            console.log(updatedCart)
         } catch (error) {
             console.error('Error adding products to cart:', error);
             res.status(500).json({ message: 'Error adding products to cart' });
@@ -75,6 +107,37 @@ async getCartByUserId(req,res){
     
     }
     
+ */
+
+    //PARA MONGO
+
+    async addProductTOCart (req,res ){
+        const cartId = req.params.cid;
+        const productId = req.params.pid;
+        console.log('id del producto',productId,'id del carrito', cartId)
+
+        //pasar a middleware
+          try{
+    
+       const productAdd = await cartService.addProductToCart(cartId,productId)
+      
+          return res.json({
+            status:'success',
+            message: 'Producto agregado al carrito',
+            cartId: cartId,
+        payload:productAdd });
+    
+
+        } catch (error) {
+            console.error('Error adding products to cart:', error);
+            res.status(500).json({ message: 'Error adding products to cart' });
+        }
+    
+    }
+    
+
+
+
    /*  async createCart(req, res) {
         try {
 
@@ -106,11 +169,12 @@ async getCartByUserId(req,res){
     } */
     async getCartById (req, res) {
         try {
+            
             const cartId = req.params.cid;
             const cart = await cartService.getCartById(cartId);
             res.status(200).json({
                 status: 'success',
-                data: cart
+                payload: cart
             });
         }
             
@@ -119,7 +183,27 @@ async getCartByUserId(req,res){
             throw error;
         }
     }
+//mostrando los productos del carrito ---continuar
+    async getProductToCart(req,res){
 
+    }
+
+    async FindProductCart(req,res)
+{
+    try {
+        // Obtener el ID del usuario autenticado desde la sesión o el token de acceso.
+        const userId = req.user.id; // Esto depende de cómo estés gestionando la autenticación.
+
+        // Aquí asumimos que tienes una función o una base de datos para obtener los productos en el carrito del usuario.
+        // Reemplaza esto con la lógica específica de tu aplicación.
+        const carrito = await cartService.obtenerProductosDelCarrito(userId);
+
+        res.json(carrito);
+    } catch (error) {
+        console.error('Error al obtener los productos del carrito:', error);
+        res.status(500).json({ error: 'Error al obtener los productos del carrito' });
+    }
+}
 }
 
    

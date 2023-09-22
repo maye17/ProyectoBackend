@@ -6,13 +6,11 @@ const AllUserRouter = express.Router();
 
 AllUserRouter.get("/", isAdmin, async (req,res)=> {
     try {
-/*         const users = await serviceUser.AllUser({});    
-        console.log(users)     
-      return  res.status(200).render('authAdmin',{users}); */
+
 
       data = await serviceUser.AllUser({});
         console.log(data)
-        //res.status(200).json({ status: "success", msg: "All users", data: data })
+
         const users = data.map((user) => {
             return {
               id: user._id,

@@ -114,12 +114,13 @@ async createCartLogin(userId) {
     async addProductTOCart (req,res ){
         const cartId = req.params.cid;
         const productId = req.params.pid;
+        const quantity = 1//req.body.quantity
         console.log('id del producto',productId,'id del carrito', cartId)
 
         //pasar a middleware
           try{
     
-       const productAdd = await cartService.addProductToCart(cartId,productId)
+       const productAdd = await cartService.addProductToCart(cartId,productId,quantity)
       
           return res.json({
             status:'success',
@@ -136,37 +137,6 @@ async createCartLogin(userId) {
     }
     
 
-
-
-   /*  async createCart(req, res) {
-        try {
-
-            if (!req.user) {
-                 
-                res.status(400).json({ status: "error", msg: "Error login", data: {} })
-           
-            }
-
-            const userId = req.user._id; 
-           await cartService.createCart(userId);
-
-            
-        } catch (error) {
-            // Manejo de errores aquí
-            console.error(error);
-            return res.json({
-                status: "error",
-                msg: "Error en el servidor",
-                error: error.message
-            });
-        }
-    } */
-/*     updateCart(){
-
-    }
-    deleteCart(){
-
-    } */
     async getCartById (req, res) {
         try {
             
@@ -183,29 +153,71 @@ async createCartLogin(userId) {
             throw error;
         }
     }
-//mostrando los productos del carrito ---continuar
-    async getProductToCart(req,res){
 
-    }
 
-    async FindProductCart(req,res)
-{
+async  updateQuantityProduct(req, res) {
+
+    
+    const cartId = req.params.cid;
+    const productId = req.params.pid;
+    const quantity = req.body.quantity;
+
     try {
-        // Obtener el ID del usuario autenticado desde la sesión o el token de acceso.
-        const userId = req.user.id; // Esto depende de cómo estés gestionando la autenticación.
+        const updatedCart = await cartService.updateQuantityInCart(cartId, productId, quantity);
 
-        // Aquí asumimos que tienes una función o una base de datos para obtener los productos en el carrito del usuario.
-        // Reemplaza esto con la lógica específica de tu aplicación.
-        const carrito = await cartService.obtenerProductosDelCarrito(userId);
-
-        res.json(carrito);
+        return res.status(200).json({
+            status: 'success',
+            message: 'Cantidad del producto actualizada en el carrito',
+            payload: updatedCart,
+        });
     } catch (error) {
-        console.error('Error al obtener los productos del carrito:', error);
-        res.status(500).json({ error: 'Error al obtener los productos del carrito' });
+        return res.status(500).json({
+            status: 'error',
+            message: 'Error interno del servidor',
+            payload: null,
+        });
     }
 }
+
+
+//---ELIMINAR PRODUCTOS ---
+async deleteForProduct(req,res){
+    const productId = req.params.pid;
+    const cartId = req.params.cid;
+    const quantityToRemove  = req.body.quantity;
+
+    console.log('en el controller id del carrito', cartId)
+     // Verificar que la cantidad a eliminar sea un número positivo
+     if (isNaN(quantityToRemove) || quantityToRemove <= 0) {
+        return res.status(400).json({
+          status: 'error',
+          message: 'La cantidad a eliminar debe ser un número positivo.'
+        });
+      }
+  
+
+    try {
+        const deleteOneProduct = await cartService.removeProductFromCart(cartId,productId,quantityToRemove)
+
+
+        if (!deleteOneProduct) {
+            return res.status(404).json({
+              status: 'error',
+              message: 'El producto no se encontró en el carrito o la cantidad a eliminar es mayor que la cantidad en el carrito.'
+            });
+          }
+
+
+        return res. status(200).json({
+            status:'success',
+            message:"delete for product",
+            payload:deleteOneProduct
+        })
+    } catch (error) {
+        throw error
+    }
 }
 
-   
+} 
 
  module.exports = CartControllers;

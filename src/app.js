@@ -1,4 +1,4 @@
-//@ts-check
+
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
@@ -11,7 +11,6 @@ const { Server } = require("socket.io");
 const realTimeProducts = require("./routes/realtimeproducts.js");
 const authRouter = require("./routes/auth.router.js")
 const sessionsRouter = require("./routes/sessions.router.js");
-const loginRouter = require("./routes/login.router.js");
 const form = require('./routes/form.router.js');
 const connectMongo = require("./utils/mongo");
 const principalRouter = require("./routes/product.router.js");
@@ -107,9 +106,6 @@ app.use('/api/forgetPassword',sendMail)
 
 app.use('/api/sessions', sessionsRouter);
 app.use('/send', mailRouter)
-
-//No usar solo prueba
-/* app.use('/', loginRouter); */
 
 //---Rutas: Sockets----
 

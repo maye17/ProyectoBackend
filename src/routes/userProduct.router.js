@@ -16,6 +16,9 @@ userProductRouter.get('/user/', isUser, principalControllers.mostrarProductos);
 
 userProductRouter.get('/user/:uid', isUser, principalControllers.mostrarProductos);
 
+
+
+
 /* userProductRouter.get('/user/:uid', isUser, async(req,res)=>{
     const userId = req.params._id;
     res.render('user')

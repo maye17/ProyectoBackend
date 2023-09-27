@@ -49,7 +49,24 @@ const Userschema = new Schema({
         type: Date,
         required:false,
     },
+    
+    isPremium: {
+        type: Boolean,
+        required:false,
+    },
 
+    documents:[
+        {
+        name:{
+            type:String,
+            required:false,
+        },
+        reference:{
+            type:String,
+            required:false,
+        }
+    }
+    ]
 });
 
 Userschema.plugin(mongoosePaginate)

@@ -1,5 +1,4 @@
 <div>
-    <h3>Bienvenido</h3>
 <nav class="navbar bg-light">
   <div class="container-fluid">
         <a href="/"><img 
@@ -13,19 +12,28 @@
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 </svg></button>
     </form>
-    <li class="nav-item">
-      <a class="nav-link"
-      data-bs-toggle="modal" data-bs-target="#exampleModal">  
-      <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
-          <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
-        </svg>
-       <span class="cart-quantity" id="CarritoTotal">0</span>
-      </a>
-    </li> 
-    <a href="/auth/logout">Salir</a>
+      <li class="nav-item">
+        <a class="nav-link"
+        data-bs-toggle="modal" data-bs-target="#exampleModal">  
+        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
+            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+          </svg>
+         <span class="cart-quantity" id="CarritoTotal">0</span>
+        </a>
+      </li>
+    <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Bienvenido
+          </a> 
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="/users/profile">Perfil</a></li>
+      <li><a class="dropdown-item" href="/auth/logout">Salir</a></li>
+    </ul>
+    </li>
+    
+
   </div>
   <p id="idUser" data-user-id={{userId}}></p>
- {{!--  <p id="cartId" data-cart-id={{cartId}}>{{cartId}}</p> --}}
 </nav>
 <ul id="resultado">
             
@@ -45,9 +53,32 @@
         <p  class="card-text">{{price}}</p>
         <p class="card-text">Stock disponible:{{stock}}</p>
         <span class="product-id"></span>
-        <button type="button" class="Add-Cart btn btn-primary" data-producto-id={{this._id}}>Agregar</button>
+         <button class="Cart-view btn btn-primary" type="button" 
+         data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop"
+         data-product-view-id={{this._id}}>
+          Detalle del Producto
+        </button> 
+          <button type="button" class="Add-Cart btn btn-primary" data-producto-id={{this._id}}>Agregar</button>     
       </div>
     </div>
+    <!--Offcanvas para el detalle del producto-->
+
+<div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="staticBackdropLabel">Offcanvas</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>          
+  <div class="offcanvas-body">
+    <div>
+      
+    <p>{{_id}}</p>
+    <img src={{thumbnail}} class="card-img-top product-thumbnail" alt="imagen">
+     <p>{{title}}</p>
+
+    </div>
+  </div>
+    <button type="button" class="Add-Cart btn btn-primary" data-producto-id={{this._id}}>Agregar</button>
+</div>
  <!-- Modal para el carrito -->
 <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -72,7 +103,7 @@
                 <tr>
                   <td>{{name}}</td>
                   <td>{{price}}</td>
-                  <td>{{cantidad}}</td>
+                  <td>{{quantity}}</td>
                 </tr>
               {{/each}}
             </tbody>
@@ -148,7 +179,6 @@
   </div>
 </div>
 </div>
-
  {{/each}}
 </div>
 </div>
@@ -156,7 +186,7 @@
 <!--paginado de los productos -->
   <div style="display: flex; justify-content: center; margin-top: 30px">
     {{#if pagination.hasPrevPage}}
-    <a href="/access/user/?page={{pagination.prevPage}}&limit={{pagination.limit}}">&lt; Anterior</a>
+    <a href="/access/user/?cartId=/?page={{pagination.prevPage}}&limit={{pagination.limit}}">&lt; Anterior</a>
     {{/if}}
     <span style="margin-left: 20px; margin-right: 20px">Página {{pagination.page}} de {{pagination.totalPages}}</span>
     {{#if pagination.hasNextPage}}

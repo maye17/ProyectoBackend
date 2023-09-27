@@ -5,22 +5,6 @@ const createHash = require("../utils/createHash")
 
 class UserService {
 
-    async AllUser() {
-        try {
-            const users = await usersModel.find({},
-                {
-                  _id: true,
-                  email: true,
-                  firstName: true,
-                  password: true,
-                  role: true,
-                });
-            return users;
-        } catch (error) {
-            throw error;
-        }
-    }
-
 
 async AllPassword (){
 

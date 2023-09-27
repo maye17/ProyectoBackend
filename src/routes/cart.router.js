@@ -11,12 +11,9 @@ const cartRouter = express.Router();
 
 cartRouter.post("/", cartControllers.createCart);
 cartRouter.get("/:cid", cartControllers.getCartById);
-//cartRouter.put('/:cid/product/:pid', addProductTOCart)
-//cartRouter.post("/:cid/product/:pid", cartControllers.addProductTOCart);
-//cartRouter.get('/agregar-carrito/:cid',cartControllers.getProductToCart)
 cartRouter.post("/:cid/product/:pid", isLogin, cartControllers.addProductTOCart);
-
-cartRouter.get('/products',isLogin,cartControllers.FindProductCart)
+cartRouter.put("/:cid/product/:pid", cartControllers.updateQuantityProduct);
+cartRouter.delete('/:cid/product/:pid', cartControllers.deleteForProduct)
 //cartRouter.get('/cid/purchase', cartControllers.Add)
 
 

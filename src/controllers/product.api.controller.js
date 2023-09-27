@@ -69,7 +69,7 @@ class ProductsController {
 
     
     
-    async updateOne   (req, res) {
+    async updateOne(req, res) {
         try {
             const _id = req.params.pid
     

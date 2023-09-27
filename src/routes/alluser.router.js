@@ -2,36 +2,27 @@ const express = require("express");
 const UserService = require('../services/user.service.js');
 const serviceUser = new UserService();
 const isAdmin = require("../middlewares/authAdmin.js");
+const allUserController = require('../controllers/alluser.controller.js')
+const uploader = require('../utils/utils')
+const alluserController = new allUserController();
 const AllUserRouter = express.Router();
 
-AllUserRouter.get("/", isAdmin, async (req,res)=> {
-    try {
+AllUserRouter.get("/", isAdmin, alluserController.getAllUser)
+AllUserRouter.put('/:uid',alluserController.updateDataUser)
+AllUserRouter.delete('/:uid', alluserController.deleteUser)
 
+AllUserRouter.post('/:uid/documents',uploader.single('documents'), alluserController.addDocumentUser)
+AllUserRouter.put('/premium/:uid',uploader.fields([
+    { name: 'identificacion' },
+    { name: 'domicilio' },
+    { name: 'estadoCuenta' }
+  ]), 
+  alluserController.updateUserPremium
+);
 
-      data = await serviceUser.AllUser({});
-        console.log(data)
+AllUserRouter.put('/:uid/documents',uploader.single('profile'), 
+  alluserController.updateUserPremium
+);
 
-        const users = data.map((user) => {
-            return {
-              id: user._id,
-              email: user.email,
-              firstName: user.firstName,
-              password: user.password,
-              role: user.role,
-            };
-        })
-        const title = "Administrador";
-        return res.status(200).render("authAdmin", { users, title });
-        
-
-    } catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ status: "error", msg: "Invalid input AllUserRouter", data: {} })
-        } else {
-            res.status(500).json({ status: "error", msg: "Error in server", data: {} })
-        }
-    }
-
-})
 
 module.exports = AllUserRouter;

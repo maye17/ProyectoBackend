@@ -55,7 +55,7 @@ passport.use(
         async (req, username, password, done) => {
 
             try {
-                const { email, firstName, lastName, usuario } = req.body;
+                const { email, firstName, lastName, usuario,documents } = req.body;
                 let user = await userModel.findOne({email:username})
                 if (user) {
                     console.log('el usuario ya existe')
@@ -66,9 +66,10 @@ passport.use(
                         firstName,
                         lastName,
                         isAdmin:false,
+                        isPremium: false,
                         password:createHash(password) ,
                         usuario,
-                       
+                        documents: documents || [],
                     }
                     let userCreated = await userModel.create(newUser);  
                     console.log(userCreated);

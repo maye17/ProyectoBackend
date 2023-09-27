@@ -37,7 +37,7 @@
   </button>
 <div class="collapse" id="collapseExample">
   <div class="card card-body">
- <form action="/auth/register" method="POST">
+ <form action="/auth/register" method="POST" enctype="multipart/form-data">
     <div class="box__card__body-text mb-2">
         <label 
         htmlFor='firstName'
@@ -102,6 +102,10 @@
             placeholder="user1"
              />
         </div>
+    </div>
+    <div  class="box__card__body-text mb-2">
+      <label for="documents">Documentos:</label>
+    <input type="file" name="documents" id="documents" accept=".pdf, .doc, .docx">
     </div>
     <div class="box__card__body-btn mb-2">
         <div class="d-grid gap-2 col-6 mx-auto">

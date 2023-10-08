@@ -116,16 +116,6 @@ app.use("/", principalRouter)
 //Ruta para usuario acomodando en capas
 
 
-
-app.get("*"), (req, res) => {
-    return res.status(404).json({
-        status: "error",
-         msg: "Not Found", 
-         data: {} 
-        })
-}
-
-
 //---------Ruta para Mocking----------
 
 //app.use('/mockingproducts')
@@ -134,20 +124,3 @@ app.get("*"), (req, res) => {
 
  
 //-------------- solicitando id del pedido------------------------
-/* app.get(`/products/:pid`, async (req,res)=>{
-    try {
-        const idPedido = parseInt(req.params.pid) ;
-    const idSolicitado = await productos.getProductById(idPedido);
- //const idSolicitado = data.products.find((item)=> (item.id === idPedido))
-    if(!idPedido){
-        return res.json(productos.getAllProducts())
-    }
-     if(idSolicitado){
-        return res.json(idSolicitado);
-     }else {
-         return res.json({error:'El producto con el id: ' +  idPedido + ' no existe'})
-        }} catch (error) {
-            throw new Error(error.message)
-    }
-})
- */

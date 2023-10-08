@@ -187,6 +187,7 @@ async deleteForProduct(req,res){
     const quantityToRemove  = req.body.quantity;
 
     console.log('en el controller id del carrito', cartId)
+    console.log('cantidad desde el backend',quantityToRemove)
      // Verificar que la cantidad a eliminar sea un número positivo
      if (isNaN(quantityToRemove) || quantityToRemove <= 0) {
         return res.status(400).json({

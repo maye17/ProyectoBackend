@@ -6,7 +6,7 @@ class allUserService{
 
     async AllUser() {
         try {
-            const users = await usersModel.find({},
+            const users = await userModel.find({},
                 {
                   _id: true,
                   email: true,
@@ -69,12 +69,28 @@ class allUserService{
         }
     }
 
+
+//Actualizar documentos desde el front del usuario
+
+async getUserToDocument(userId){
+    try {
+
+        const UserDocument = await userModel.findById({_id:userId})
+
+        return UserDocument;
+        
+    } catch (error) {
+        throw error
+    }
+}
+
+
     async addDocumenTotUser(userId){
         try {
             const user = await userModel.findById(userId);
 
             if (!user) {
-                throw new Error('Usuario no encontrado');
+                throw error;
             }
     
             return user;
@@ -83,14 +99,13 @@ class allUserService{
         }
     }
     
-    async  converUserToUpdate(userPremium) {
+    async  converUserToUpdate(userUpdate) {
         try {
-            if (!userPremium) {
+            if (!userUpdate) {
                 throw new Error('Usuario no válido');
             }
-    
-            userPremium.isPremium = true;
-            const updatedUser = await userPremium.save();
+           
+            const updatedUser = await userUpdate.save();
     
             return {
                 message: 'Usuario convertido en premium exitosamente',

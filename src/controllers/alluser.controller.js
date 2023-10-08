@@ -95,7 +95,33 @@ async deleteUser(req,res){
 }
 
 
-//USER PREMIUM 
+//Acutalizar datos de usuario desde el front de usuario
+
+async getDocumentUser(req,res){
+    try {
+  
+        if (req.isAuthenticated()) {
+            // Obteniendo el Id del usuario autenticado
+            const userData = req.user; 
+      /*       const data = {
+                firstName: userData.firstName,
+                cartId:userData.cartId
+            };
+ */
+            console.log('ID del usuario logueado que pasará a handlebars:', userData);
+            return res.status(200).render("profile",userData);
+        
+        } else {
+            // El usuario no está autenticado
+            return res.status(401).render('error', { message: 'Usuario no autenticado' });
+        }
+
+    } catch (error) {
+        throw error
+    }
+}
+
+
 async addDocumentUser(req,res){
 
     try {
@@ -112,8 +138,9 @@ async addDocumentUser(req,res){
         }
 
         if(archivo){
-            await serviceUserAll.convertUserToPremium(userUpdate)
+         await  serviceUserAll.converUserToUpdate(userUpdate)
         }
+
  
          return res.status(200).json({
              status: "success",

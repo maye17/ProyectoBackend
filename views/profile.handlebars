@@ -1,10 +1,33 @@
-<form action="/registro" method="POST" enctype="multipart/form-data">
-    <!-- Otros campos del formulario (por ejemplo, nombre, apellido, correo, etc.) -->
-    
-    <!-- Campo para cargar documentos -->
-    <label for="documentos">Documentos:</label>
-    <input type="file" name="documentos" id="documentos" accept=".pdf, .doc, .docx"> <!-- Puedes ajustar las extensiones permitidas según tus necesidades -->
-    
-    <!-- Botón de envío -->
-    <button class="btn btn-primary" type="submit">Actualizar</button>
-</form>
+
+<div class="container-fluid">
+<nav class="navbar bg-light">
+  <div class="container-fluid">
+        <a href="/"><img 
+            src="/images/COMPU-GADBIZZLogo.png"
+            alt="logo"
+            style="width: 80px;"
+        /></a>
+    <div class="d-flex">
+    <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+           Hola, {{this.firstName}} 
+          </a> 
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/access/users/?cartId=">Compras</a></li>
+        <li><a class="dropdown-item" href="/users/profile/">Perfil</a></li>
+        <li><a class="dropdown-item" href="/auth/logout">Salir</a></li>
+    </ul>
+    </li>
+    </div>
+  </div>
+</nav>
+    <div>
+        <form action="/registro" method="POST" enctype="multipart/form-data">
+        <!-- Campo para cargar documentos -->
+            <label for="documentos">Documentos:</label>
+            <input type="file" name="documentos" id="documentos" accept=".pdf, .doc, .docx">
+            <!-- Botón de envío -->
+            <button class="btn btn-primary" type="submit">Actualizar</button>
+        </form>
+    </div>
+</div>

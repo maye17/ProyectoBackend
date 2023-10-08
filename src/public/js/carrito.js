@@ -42,7 +42,7 @@ buttonViewDetail.forEach((button) => {
 
 
 
-// Controlador de evento para el botón que abre el offcanvas
+
 // Controlador de evento para el botón que abre el offcanvas
 const buttonViewDetail = document.querySelectorAll('.Cart-view');
 
@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const UserID = userId.getAttribute('data-user-id');
   const botonesAgregarCarrito = document.querySelectorAll(".Add-Cart");
 
+  if(UserID !== null){
+
   botonesAgregarCarrito.forEach((boton) => {
     boton.addEventListener("click", async function () {
       const productId = this.getAttribute("data-producto-id");
@@ -81,6 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
       // Obtener el valor de cartId de la URL
       const cartId = getQueryParam('cartId');
       console.log('cartId desde la URL:', cartId);
+     
+        if (cartId) {
+          // Incluye cartId en la URL solo si tiene un valor válido
+          const prevPageURL = `/access/user/?cartId=${cartId}&page=${pagination.prevPage}&limit=${pagination.limit}`;
+          // ...
+        }
+
 
       // Realizar la solicitud fetch utilizando cartId
       const options = {
@@ -95,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = await response.json();
         if (response.ok) {
           console.log(result.message, productId);
+
           mostrarCarrito(); // Mensaje de éxito
         } else {
           console.log(result.message); // Mensaje de error del servidor
@@ -105,7 +115,13 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+}else {
+  console.log('el usuario no esta registrado')
+}
 });
+
+
 
 
 //Mostrar Local Storage
@@ -115,14 +131,26 @@ document.addEventListener('DOMContentLoaded',() => {
 })
 
       // -----Mostrar producto del carrito en el modal-------- 
-
+      let prevPageURL;
+    let  pagination = {
+      prevPage: 0, // Asigna el valor adecuado
+      limit: 4,   // Asigna el valor adecuado
+    }; 
  
     let result;
   async function mostrarCarrito() {
 
-    const modalBody = document.querySelector('.modal .modal-body');
-    const cartIdViewProduct = getQueryParam('cartId');
-    console.log('ID del carro', cartIdViewProduct);
+        const modalBody = document.querySelector('.modal .modal-body');
+        const cartId = getQueryParam('cartId');
+
+        if (cartId) {
+          // Incluye cartId en la URL solo si tiene un valor válido
+         prevPageURL = `/access/user/?cartId=${cartId}&page=${pagination.prevPage}&limit=${pagination.limit}`;
+          console.log('url de paginado del carrito', prevPageURL)
+        }
+        
+
+    console.log('ID del carro', cartId);
     const options = {
       method: "GET",
       headers: {
@@ -131,7 +159,7 @@ document.addEventListener('DOMContentLoaded',() => {
     }
   
     try {
-      const response = await fetch(`/carts/${cartIdViewProduct}`, options);
+      const response = await fetch(`/carts/${cartId}`, options);
        result = await response.json();
   
       console.log('productos agregados al carrito y mostrados en el front', result.payload.products);
@@ -147,6 +175,8 @@ document.addEventListener('DOMContentLoaded',() => {
           const titleModal = product.productId.title;
           const priceModal = product.productId.price;
           const quantityModal = product.quantity;
+          const DeletedProductId = product.productId._id;
+      
   
           // Crear un elemento para cada producto y agregarlo al modal
           const productElement = document.createElement('div');
@@ -158,10 +188,27 @@ document.addEventListener('DOMContentLoaded',() => {
             <div>
               <p>Producto: ${titleModal}</p>
               <p>Precio: ${priceModal}</p>
-              <p>Cantidad:${quantityModal}</p>
+              <h6>Cantidad:</h6>
+              <p class="cantidad" data-product-id="${DeletedProductId}">Cantidad:${quantityModal}</p>
+              <p>Id:${DeletedProductId}</p>
+              <button class="delete-product btn btn-danger" data-deleted-id="${DeletedProductId}" >Borrar</button>
             </div>
           `;
-  
+
+          //Para eliminar un producto 
+          const BotonDeleteProduct = productElement.querySelectorAll('.delete-product[data-deleted-id]');
+          //Funcion para eliminar 
+
+          BotonDeleteProduct.forEach((deleteButton) => {
+            deleteButton.addEventListener('click', function () {
+              const DeletedProductId = this.getAttribute('data-deleted-id');
+              DeletedProduct(DeletedProductId);
+            });
+          });
+          
+
+
+
           modalBody.appendChild(productElement);
         });
 
@@ -241,6 +288,7 @@ if (carritoStorage) {
                 const title = product.productId.title;
                 const price = product.productId.price;
                 const quantity = product.quantity;
+                const DeletedProductId = product.productId._id;
 
                 // Crear elementos HTML para mostrar los productos
                 const productElement = document.createElement('div');
@@ -252,24 +300,32 @@ if (carritoStorage) {
                     <h3>${title}</h3>
                     <p>Precio: ${price}</p>
                     <p>Cantidad: ${quantity}</p>
+                    <button class="delete-product btn btn-danger" data-product-id="${DeletedProductId}">Borrar</button>
+
                 `;
 
                 // Agregar el elemento a tu página (por ejemplo, a un contenedor)
                 const contenedorProductos = document.querySelector('.contenedor-productos');
-                contenedorProductos.appendChild(productElement);
+
+                if (contenedorProductos) {
+                  contenedorProductos.appendChild(productElement);
+                } else {
+                  console.log('El contenedor de productos no se encontró en el DOM.');
+                }
+               
             });
         } else {
-            // Si el carrito está vacío, muestra un mensaje
+            // Si el carrito está vacío
             const mensajeCarritoVacio = document.createElement('p');
             mensajeCarritoVacio.textContent = 'El carrito está vacío.';
             const contenedorProductos = document.querySelector('.contenedor-productos');
             contenedorProductos.appendChild(mensajeCarritoVacio);
         }
     } catch (error) {
-        console.error('Error al parsear los datos del Local Storage:', error);
+      console.log('Error al parsear los datos del Local Storage:', error);
     }
 } else {
-    // Si no hay datos en el Local Storage, muestra un mensaje
+    // Datos no almacenados en el localStorage
     const mensajeSinDatos = document.createElement('p');
     mensajeSinDatos.textContent = 'No hay datos en el carrito.';
     const contenedorProductos = document.querySelector('.contenedor-productos');
@@ -278,7 +334,102 @@ if (carritoStorage) {
 
 }
 
-//elimina la información del local storage una vez enviado el pedido
+
+//Eliminar un producto 
+
+function DeletedProduct() {
+  console.log('Init for delete');
+  
+  const userIdDelete = document.querySelector('#idUser');
+  const userDeleteId = userIdDelete.getAttribute('data-user-id');
+  const BotonDeleteProduct = document.querySelectorAll('.delete-product');
+
+  console.log('Obteniendo el id del usuario al cual se le eliminará la cantidad del producto seleccionado', userDeleteId);
+
+  if (userDeleteId !== null) {
+    BotonDeleteProduct.forEach((boton) => {
+      boton.addEventListener('click', async function () {
+        const DeletedProductId = this.getAttribute("data-deleted-id");
+        const cantidadElement = document.querySelector(`[data-product-id="${DeletedProductId}"]`);
+
+        if (!cantidadElement) {
+          console.error(`No se encontró el elemento de cantidad para el producto ${DeletedProductId}`);
+          return; // Salir de la función si no se encuentra el elemento
+        }
+
+        console.log('Cantidad del elemento', cantidadElement.textContent);
+
+        let cantidadActual = 0; // Valor predeterminado si no se encuentra la cantidad
+
+        const textContent = cantidadElement.textContent;
+        const match = textContent.match(/Cantidad:\s*(\d+)/); // Buscar el número después de "Cantidad:"
+
+        if (match) {
+          cantidadActual = parseInt(match[1]);
+          console.log('Cantidad actual ParseInt', cantidadActual);
+        } else {
+          console.error(`No se pudo extraer la cantidad del elemento de cantidad para el producto ${DeletedProductId}`);
+        }
+
+        console.log('Id del botón tocado', DeletedProductId);
+
+        // Obtener el valor de cartId de la URL
+        const cartId = getQueryParam('cartId');
+
+       
+        if (cartId) {
+          // Incluye cartId en la URL solo si tiene un valor válido
+          const prevPageURL = `/access/user/?cartId=${cartId}&page=${pagination.prevPage}&limit=${pagination.limit}`;
+          // ...
+        }
+
+        console.log('cartId desde la URL:', cartId);
+
+
+        const options = {
+          method: "DELETE",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ quantity: 1 }), // Eliminar 1 a la cantidad actual
+        };
+
+        try {
+          const response = await fetch(`/carts/${cartId}/product/${DeletedProductId}`, options);
+          const result = await response.json();
+          if (response.ok) {
+            console.log(result.message, DeletedProductId);
+
+            if (!isNaN(cantidadActual) && cantidadActual > 0) {
+              const nuevaCantidad = cantidadActual - 1;
+              cantidadElement.textContent = `Cantidad: ${nuevaCantidad}`;
+              console.log('cuanto queda',nuevaCantidad)
+            }else{
+              location.reload()
+            }
+
+
+            // Eliminar el elemento del carrito de la interfaz de usuario
+            const productRow = boton.closest('tr');
+            if (productRow !== null) {
+              productRow.remove();
+            }
+           
+          } else {
+            console.log(result.message);
+          }
+        } catch (error) {
+          console.error('Error al procesar la eliminación del producto:', error);
+        }
+      });
+    });
+  }
+}
+
+
+
+
+ ///elimina la información del local storage una vez enviado el pedido
 /* function borrarLocalStorage() {
   localStorage.removeItem('carrito');
 } */
@@ -288,4 +439,4 @@ if (carritoStorage) {
 //elimina la información del local storage una vez enviado el pedido
 function borrarLocalStorage() {
   localStorage.removeItem('carrito');
-} */
+}  */

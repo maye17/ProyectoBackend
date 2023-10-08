@@ -23,65 +23,7 @@ async function renderLoginPage(req, res) {
     }
 }
 
-// Función para manejar el inicio de sesión exitoso
-/* async function handleSuccessfulLogin(req, res) {
-    try {
-        // Crear el carrito para el usuario que inició sesión
-       
-        const userId = req.user._id;
-        let cartId;
-        console.log('Entrando a handleSuccessfulLogin', userId);
-        if(userId){
-            try {
-            cartId= await cartControllers.createCartLogin(userId);
-           
-            console.log('usuario al que se le crea el carrito',cartId);
-            return cartId
 
-            } catch (error) {
-                console.error('Error al crear el carrito:', error);
-                
-                return res.status(500).json({
-                    status: "error",
-                    msg: "Error al crear el carrito",
-                    data: {}
-                }); 
-            }
-        }else {
-            
-   
-          const cartId=  await cartControllers.getCartByUserId(userId)
-          //  await cartControllers.getCartById(_id)  
-            
-            console.log('obteniendo id del carrito para el usuario logueado',cartId)
-        }
-        //controla que el usuario no sea administrador
-        if(!req.user.isAdmin){
-            console.log('carrito de usuario comun',req.user)
-            const userId = req.user._id;
-            
-          //  const cartId = await cartControllers.getCartById()
-           console.log(`obteniendo id del usuario logqueado para validar carrito creado en el front,${userId}`)
-           return res.redirect(`/access/user/${userId}?cartId=${cartId}`)
-     
-      
-        } else {
-         // si es admin Redirigir al usuario a la página principal de administrador
-        console.log('req.user a user',req.user)
-
-        return res.redirect('/auth/administracion');
-
-        }
-      
-    } catch (error) {
-        res.status(500).json({ 
-            status: "error",
-            msg: "Error en servidor", 
-            data: {}
-        });
-    }
-}
- */
 
 async function handleSuccessfulLogin(req, res) {
     try {

@@ -26,7 +26,7 @@
             Bienvenido
           </a> 
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="/users/profile">Perfil</a></li>
+      <li><a class="dropdown-item" href="/users/profile/">Perfil</a></li>
       <li><a class="dropdown-item" href="/auth/logout">Salir</a></li>
     </ul>
     </li>
@@ -104,6 +104,7 @@
                   <td>{{name}}</td>
                   <td>{{price}}</td>
                   <td>{{quantity}}</td>
+                  <button  type="button" class="delete-product btn btn-danger" data-product-delete={{this._id}}>Borrar</button>
                 </tr>
               {{/each}}
             </tbody>
@@ -184,15 +185,21 @@
 </div>
 
 <!--paginado de los productos -->
-  <div style="display: flex; justify-content: center; margin-top: 30px">
-    {{#if pagination.hasPrevPage}}
-    <a href="/access/user/?cartId=/?page={{pagination.prevPage}}&limit={{pagination.limit}}">&lt; Anterior</a>
-    {{/if}}
-    <span style="margin-left: 20px; margin-right: 20px">Página {{pagination.page}} de {{pagination.totalPages}}</span>
-    {{#if pagination.hasNextPage}}
-    <a href="/access/user/?page={{pagination.nextPage}}&limit={{pagination.limit}}">Siguiente</a>
-    {{/if}}
-  </div>
+
+
+<div style="display: flex; justify-content: center; margin-top: 30px">
+  {{#if pagination.hasPrevPage}}
+  <a href="/access/user/?cartId={{cartId}}&page={{pagination.prevPage}}&limit={{pagination.limit}}">&lt; Anterior</a>
+  {{/if}}
+  <span style="margin-left: 20px; margin-right: 20px">Página {{pagination.page}} de {{pagination.totalPages}}</span>
+  {{#if pagination.hasNextPage}}
+  <a href="/access/user/?cartId={{cartId}}&page={{pagination.nextPage}}&limit={{pagination.limit}}">Siguiente</a>
+  {{/if}}
+</div>
+
+
+
+
 
   <div class="bg-secondary p-2 text-dark bg-opacity-10">
 <footer class="border-0 border-top border-bottom text-center text-dark">

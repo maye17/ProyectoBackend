@@ -2,3 +2,4 @@ node_modules
 note.txt
 /.env.development
 /.env.production
+data.txt

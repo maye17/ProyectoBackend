@@ -1,0 +1,154 @@
+host: /localhost:8080
+basePath: /v1
+schemes:
+  - https
+  - http
+
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene la lista de carritos
+      description: Retorna una lista de carritos.
+      responses:
+        200:
+          description: Éxito. Retorna la lista de productos.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'
+    post:
+     summary: Add a new cart
+     description: Add a new cart to the system.
+     parameters:
+      - in: body
+        name: product
+        description: Product data
+        required: true
+        schema:
+          $ref: '#/definitions/CartProduct' # Referencia al esquema del producto
+     responses:
+       201:
+         description: Product added successfully
+         content:
+           application/json:
+             schema:
+               $ref: '#/definitions/CartProduct'
+       400:
+         description: Bad request          
+
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene el ID del carrito
+      description: Retorna un cart por su ID.
+      parameters:
+        - name: cid
+          in: path
+          description: ID del cart
+          required: true
+      responses:
+        200:
+          description: Éxito. Retorna el producto.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'
+        404:
+          description:  Bad Request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'
+
+    delete:
+      summary: remove a cart
+      description: remove a cart to the list.
+      parameters:
+        - name: cid
+          in: path
+          description: ID del cart
+          required: true
+      responses:
+        200:
+          description: Éxito. Retorna el cart.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'
+        404:
+          description:  Bad Request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'  
+    put:
+      summary: update a carts
+      description: update a product to the list.
+      parameters:
+        - name: cid
+          in: path
+          description: ID del cart
+          required: true
+        - in: body
+          name: product
+          description: Product data
+          required: false
+          schema:
+            $ref: '#/definitions/CartProduct'
+      responses:
+        200:
+          description: Éxito. Retorna el producto.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'
+        404:
+          description:  Bad Request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CartProduct'            
+              
+
+  
+
+definitions:
+  CartProduct:
+    type: object
+    properties:
+      product:
+        $ref: '#/definitions/Producto'
+      quantity:
+        type: integer
+        description: Quantity of the product in the cart
+      _id:
+        type: string
+        description: Product ID in the cart
+    
+  Producto:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: ID del producto
+      title:
+        type: string
+        description: Nombre del producto
+      description:
+        type: string
+        description: descripcion del producto
+      price:
+        type: number
+        format: float
+        description: Precio del producto  
+      thumbnail:  
+        type: string
+        description: imagen del producto
+      stock:
+        type: number
+        description: stock del producto
+      code:
+        type: string
+        description: codigo del producto    
+ 

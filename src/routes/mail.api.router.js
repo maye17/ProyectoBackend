@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 const uploader = require('../utils/utils')
 const twilio = require('twilio')
 const mailRouter = express.Router();
-const config = require('../config/config');
+const config = require('../config/config.js');
 const crypto = require('crypto');
 const usersModel = require('../models/mongoose/user.model')
 const bodyParser = require('body-parser');
@@ -35,8 +35,8 @@ const transport = nodemailer.createTransport({
 /* transport.use('compile',handlebars({
     viewEngine:'handlebars',
     viewPath:path.resolve(__dirname,'forgetPassword')
-}))
- */
+})) */
+
 mailRouter.get('/mail',uploader.single("thumbnail"), async(req,res)=>{
     const {__dirname}=uploader;
 

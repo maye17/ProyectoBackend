@@ -1,9 +1,8 @@
 //@ts-check
 const {Server} = require("socket.io");
-/* const ProductService = require("../services/product.api.service.js"); */
+
 const messagesModel = require("../models/mongoose/messages.model.js");
-/* const productos = new ProductService();
- */
+
 
 const PrincipalService = require('../services/product.service.js');
 const principalService = new PrincipalService()
@@ -106,17 +105,6 @@ socketServer.on("connection", (socket)=>{
         
     });
     
-/*     socket.on('crear-carrito', async (carritoId)=>{
-        try {
-           const carrito = await cartService.createCart(carritoId);
-            socket.emit('carrito', carrito);
-            console.log('Evento creando-carrito', carrito);
-
-            } catch (error) {
-                console.log(error);
-                }
-                
-    }); */
  
     socket.on('agregar-al-carrito', async ({ cartId, IdProducto }) => {
       try {

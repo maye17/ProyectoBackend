@@ -1,39 +1,44 @@
 const productsModel = require('../models/mongoose/products.model.js');
-
+const mongoose = require('mongoose');
+const addLoggers = require('../utils/logger')
 //Por persistencia
 //class ProductService {
 class FactoryMongo {
     constructor(){
 
     }
-    async getAllProducts(page, limit, sort, status) {
+    async getAllProducts(page) {
         try {
-            const options = {}
-            if(page){
-                options.page = page || 1
-            }
-            if(limit){
-                options.limit = limit || 4
-            }
-            if(sort){
-                options.sort = { price: sort === 'desc' ? -1 : 1 };
-            }
-
-            const filter = {};
-
-            const dataProducts = await productsModel.paginate(filter, options);
          
-
-            return dataProducts
-
+            const queryResult = await productsModel.paginate({},{limit:4,page:page || 1});
+            const {docs,...rest} =queryResult
+            
+            //console.log(queryResult);
+            let products =docs.map((doc)=>{
+                return {
+                    _id: doc._id,
+                    title: doc.title,
+                    description:doc.description,
+                    price:doc.price,
+                    thumbnail:doc.thumbnail,
+                    marca:doc.marca,
+                    code:doc.code,
+                    stock:doc.stock,
+                    }
+            })
+                
+            return {products, pagination: rest}
+            
         } catch (error) {
-            throw error;
+      
+            addLoggers.error(message)
         }
+
     }
 
     async getProductById(productId) {
         try {
-            const product = await productsModel.findById({_id:productId});
+            const product = await productsModel.findOne({_id:productId});
             return product;
         } catch (error) {
             throw error;
@@ -49,28 +54,58 @@ class FactoryMongo {
         }
     }
 
-    async updateProduct(id, updateData) {
+    async updateProduct(id, changeProduct) {
         try {
-
-            const { _id, title, description, price, thumbnail, code, stock } = updateData;
-
+            const { title, description, price, thumbnail, code, stock } = changeProduct;
             
-             
-            const product = await productsModel.updateOne(
-                {_id:id},
-                 { _id, title, description, price, thumbnail, code, stock }
+            // Verifica que el ID sea válido
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return {
+                    success: false,
+                    message: "Invalid product ID",
+                };
+            }
+    
+            // Filtra el producto por su ID
+            const result = await productsModel.findOneAndUpdate(
+                { _id: id },
+                {
+                    title,
+                    description,
+                    price,
+                    thumbnail,
+                    code,
+                    stock,
+                },
+                { new: true }
             );
-            return product;
+    
+            if (result) {
+                // La actualización se realizó con éxito
+                return {
+                    success: true,
+                    message: "Product updated successfully",
+                    payload: result,
+                };
+            } else {
+                // El producto no se encontró
+                return {
+                    success: false,
+                    message: "Product not found or not updated",
+                };
+            }
         } catch (error) {
+            addLoggers.error;
             throw error;
         }
     }
-
+    
     async deleteProduct(productId) {
         try {
             const product = await productsModel.findByIdAndDelete({_id:productId});
             return product;
         } catch (error) {
+            addLoggers.error;
             throw error;
         }
     }

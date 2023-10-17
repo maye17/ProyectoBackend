@@ -30,7 +30,8 @@ async function handleSuccessfulLogin(req, res) {
         // Crear el carrito para el usuario que inició sesión
         const userId = req.user._id;
         console.log('Entrando a handleSuccessfulLogin', userId);
-        let cartId;
+       // const cartId = await createCartLogin(userId);
+       let cartId;
 
         if (userId) {
             try {

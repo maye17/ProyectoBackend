@@ -1,7 +1,8 @@
-/* const ProductService = require('../services/product.api.service');
-const productsService = new ProductService(); */
-const Factory = require('../DAO/factory');
-const factory = new Factory()
+const FactoryMongo = require('../services/product.api.service');
+const factoryMongo = new FactoryMongo();
+const Factory = require('../DAO/factory.js');
+const Loggers = require('../utils/logger')
+const factory = new Factory();
 
 class ProductsController {
 
@@ -19,7 +20,7 @@ class ProductsController {
                 payload: savedProduct,
             });
         } catch (error) {
-            console.error(error);
+            Loggers.warn('Couldnt add product');
             return res.status(400).json({
                 status: 'error',
                 msg: error.message,
@@ -31,7 +32,7 @@ class ProductsController {
 
     async getAll (req,res) {
         try {
-            const products = await factory.getAll();
+            const products = await factory.getAllProducts();
     
             return res.status(200).json({
                 status: "OK",
@@ -40,8 +41,10 @@ class ProductsController {
             });
         } catch (err) {
             if (err instanceof Error) {
+                req.logger.error(`Error in getAll: ${err.message}`);
                 res.status(400).json({ status: "error", msg: "No se encontraron datos", data: {} });
             } else {
+                req.logger.error(`Error in getAll: ${err}`);
                 res.status(500).json({ status: "error", msg: "Error in server", payload: {} });
             }
         }
@@ -53,14 +56,16 @@ class ProductsController {
             const id = req.params.pid;
             // const dataId = await productos.getProductById(parseInt(id)); 
     
-            const dataId = await factory.getProductById(parseInt(id)); // Cambiado a this.persistence
+            const productId = await factory.getProductById(id); // Cambiado a this.persistence
 
-            console.log(dataId);
-            res.status(200).json(dataId);
+            console.log('producto',productId);
+            res.status(200).json(productId);
         } catch (err) {
             if (err instanceof Error) {
+                req.logger.error(`Error in getById: ${err.message}`);
                 res.status(400).json({ status: "error", msg: "No se encontro el producto", data: {} });
             } else {
+                req.logger.error(`Error in getById: ${err}`);
                 res.status(500).json({ status: "error", msg: "Error in server", payload: {} });
             }
         }
@@ -68,23 +73,47 @@ class ProductsController {
    
 
     
-    
     async updateOne(req, res) {
         try {
-            const _id = req.params.pid
+            const id = req.params.pid;
+            const changeProduct = req.body;
     
-           const productos = await factory.getAllProducts();
-            let changeProduct = req.body;
-            productos.updateProduct(_id, changeProduct);
-            return res.status(201).json({
-                status: "Ok",
-                msg: "product updated",
-                data: changeProduct
-            })
-        } catch {
-            res.status(500).json({ status: "error", msg: "Invalid input", data: {} })
+                  // Validación de datos de entrada
+        if (!id || !changeProduct) {
+            return res.status(400).json({
+                status: "error",
+                msg: "Bad request: Missing product ID or update data"
+            });
+        }
+
+
+            const productos = await factory.getProductById(id);
+
+            // Llama al servicio de actualización de productos
+            const result = await factory.updateProduct(id, changeProduct);
+    
+    
+           if (result) {
+                // La actualización fue exitosa
+                return res.status(200).json({
+                    status: "Ok",
+                    msg: "Product updated",
+                    data: result
+                 });
+            } else {
+                // La actualización no fue exitosa
+                req.logger.error(`Error in update: ${err.message}`);
+                return res.status(404).json({
+                    status: "error",
+                    msg: "Product not found or not updated"
+                });
+            } 
+        } catch (error) {
+            // Maneja los errores generales
+            res.status(500).json({ status: "error", msg: "Internal server error", error: error.message });
         }
     }
+
     
     async deleteOne  (req, res) {
         try {

@@ -52,8 +52,16 @@ async getCartByUserId(userId){
 async createCartLogin(userId) {
     try {
     
-     const cartid = await cartService.createCart(userId);
-        return cartid;
+        // Verificar si el usuario ya tiene un carrito
+        const existingCart = await cartService.getCartByUserId(userId)  
+        // Si el usuario ya tiene un carrito, no es necesario crear uno nuevo.
+        if (existingCart) {
+            console.log('existe el carrito del usuario', existingCart)
+            return existingCart;
+           }
+
+         const cartid = await cartService.createCart(userId);
+            return cartid;
        
     } catch (error) {
         throw error;

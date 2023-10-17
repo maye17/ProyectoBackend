@@ -31,6 +31,42 @@ class PrincipalController {
 
     }
 
+    async updateOne(req, res) {
+      try {
+          const id = req.params.pid;
+          const changeProduct = req.body;
+  
+                // Validación de datos de entrada
+      if (!id || !changeProduct) {
+          return res.status(400).json({
+              status: "error",
+              msg: "Bad request: Missing product ID or update data"
+          });
+      }
+
+
+          const productos = await factory.getProductById(id);
+  
+          console.log('encontrar producto para actualizar', productos)
+          // Llama al servicio de actualización de productos
+          const result = await factory.updateProduct(id, changeProduct);
+  
+          console.log('encontrando en producto para actualizar api', result)
+ 
+              return res.status(200).json({
+                  status: "Ok",
+                  msg: "Product updated",
+                  data: result
+               });
+
+      } catch (error) {
+          // Maneja los errores generales
+          res.status(500).json({ status: "error", msg: "Internal server error", error: error.message });
+      }
+  }
+
+
+
     async  mostrarProductos(req, res) {
         try {
           // Obtener los productos desde el controlador de productos

@@ -1,0 +1,164 @@
+host: /localhost:8080
+basePath: /v1
+schemes:
+  - https
+  - http
+
+paths:
+  /api/products:
+    get:
+      summary: Obtiene la lista de productos
+      description: Retorna una lista de productos.
+      responses:
+        200:
+          description: Éxito. Retorna la lista de productos.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'
+    post:
+     summary: Add a new product
+     description: Add a new product to the system.
+     parameters:
+      - in: body
+        name: product
+        description: Product data
+        required: true
+        schema:
+          $ref: '#/definitions/ProductAdd' # Referencia al esquema del producto
+     responses:
+       201:
+         description: Product added successfully
+         content:
+           application/json:
+             schema:
+               $ref: '#/definitions/ProductAdd'
+       400:
+         description: Bad request
+
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por ID
+      description: Retorna un producto por su ID.
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+      responses:
+        200:
+          description: Éxito. Retorna el producto.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'
+        404:
+          description:  Bad Request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'
+
+    delete:
+      summary: remove a product
+      description: remove a product to the list.
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+      responses:
+        200:
+          description: Éxito. Retorna el producto.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'
+        404:
+          description:  Bad Request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'  
+    put:
+      summary: update a product
+      description: update a product to the list.
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto
+          required: true
+        - in: body
+          name: product
+          description: Product data
+          required: false
+          schema:
+            $ref: '#/definitions/ProductAdd'
+      responses:
+        200:
+          description: Éxito. Retorna el producto.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'
+        404:
+          description:  Bad Request
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Producto'            
+              
+
+     
+definitions:
+  Producto:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: ID del producto
+      title:
+        type: string
+        description: Nombre del producto
+      description:
+        type: string
+        description: descripcion del producto
+      price:
+        type: number
+        format: float
+        description: Precio del producto  
+      thumbnail:  
+        type: string
+        description: imagen del producto
+      stock:
+        type: number
+        description: stock del producto
+      code:
+        type: string
+        description: codigo del producto
+                    
+
+  ProductAdd:
+    type: object
+    properties:
+      title:
+        type: string
+        description: Nombre del producto
+      description:
+        type: string
+        description: descripcion del producto
+      price:
+        type: number
+        format: float
+        description: Precio del producto  
+      thumbnail:  
+        type: string
+        description: imagen del producto
+      stock:
+        type: number
+        description: stock del producto
+      code:
+        type: string
+        description: codigo del producto
+                  

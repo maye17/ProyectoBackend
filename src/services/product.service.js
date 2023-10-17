@@ -40,21 +40,50 @@ class PrincipalService{
 
   }
 
-  async updateProduct(id, updateData){
-
+  async updateProduct(id, updateData) {
     try {
-        const { _id, title, description, price, thumbnail, code, stock } = updateData;
-        const objectId = new mongoose.Types.ObjectId(id);
-        const filter = { _id: objectId };
-
-        const updatedProduct = await productsModel.updateOne(filter, updateData)
-        return updatedProduct
+        const { title, description, price, thumbnail, code, stock } = updateData;
         
-    } catch (error) {
-        throw error
-    }
+        // Verifica que el ID sea válido
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return {
+                success: false,
+                message: "Invalid product ID",
+            };
+        }
 
-  }
+        // Filtra el producto por su ID
+        const result = await productsModel.findOneAndUpdate(
+            { _id: id },
+            {
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                stock,
+            },
+            { new: true }
+        );
+
+        if (result) {
+            // La actualización se realizó con éxito
+            return {
+                success: true,
+                message: "Product updated successfully",
+                payload: result,
+            };
+        } else {
+            // El producto no se encontró
+            return {
+                success: false,
+                message: "Product not found or not updated",
+            };
+        }
+    } catch (error) {
+        throw error;
+    }
+}
   async deleteProduct (productId) {
     try {
       const deletedProduct = await productsModel.deleteOne({ _id: productId });

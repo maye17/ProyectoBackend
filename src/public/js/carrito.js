@@ -31,24 +31,13 @@ ShowLocalStorge()
 //-----------MOSTRAR DETALLE DEL PRODUCTO-------
 
 const offcanvasBody = document.querySelectorAll('offcanvas-body')
-/* const buttonViewDetail = document.querySelectorAll('.Cart-view');
-
-buttonViewDetail.forEach((button) => {
-  button.addEventListener('click', function () {
-    const IDProductView = this.getAttribute("data-product-view-id");
-    console.log('ver detalle del producto', IDProductView);
-  });
-}); */
-
-
-
 
 // Controlador de evento para el botón que abre el offcanvas
 const buttonViewDetail = document.querySelectorAll('.Cart-view');
 
 buttonViewDetail.forEach((button) => {
   button.addEventListener('click', function () {
-    // Obtén los datos del producto desde el atributo personalizado
+    // datos del producto 
     const productData = JSON.parse(this.getAttribute('data-product'));
 
     // Renderiza la plantilla de Handlebars con los datos del producto
@@ -70,6 +59,11 @@ buttonViewDetail.forEach((button) => {
 
 document.addEventListener("DOMContentLoaded", function () {
   const userId = document.querySelector('#idUser');
+
+ /*  if(!userId){
+    console.log('muestro pantalla principal')
+  } */
+
   const UserID = userId.getAttribute('data-user-id');
   const botonesAgregarCarrito = document.querySelectorAll(".Add-Cart");
 
@@ -87,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cartId) {
           // Incluye cartId en la URL solo si tiene un valor válido
           const prevPageURL = `/access/user/?cartId=${cartId}&page=${pagination.prevPage}&limit=${pagination.limit}`;
-          // ...
+    
         }
 
 
@@ -108,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
           mostrarCarrito(); // Mensaje de éxito
         } else {
           console.log(result.message); // Mensaje de error del servidor
-          // Puedes mostrar una notificación al usuario indicando que ocurrió un error.
+     
         }
       } catch (error) {
         throw (error);
@@ -119,7 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
 }else {
   console.log('el usuario no esta registrado')
 }
-});
+
+}
+);
 
 
 
@@ -130,6 +126,21 @@ document.addEventListener('DOMContentLoaded',() => {
   mostrarCarrito();
 })
 
+/* document.addEventListener('DOMContentLoaded', () => {
+  const userId = document.querySelector('#idUser');
+  //const UserID = userId.getAttribute('data-user-id');
+  if (!userId) {
+
+    console.log('todo igual')
+  }else{
+    // El usuario ha iniciado sesión, por lo tanto, muestra el carrito del Local Storage
+    ShowLocalStorge();
+    mostrarCarrito();
+  }
+  // Otras acciones a realizar si el usuario no ha iniciado sesión
+}); */
+
+
       // -----Mostrar producto del carrito en el modal-------- 
       let prevPageURL;
     let  pagination = {
@@ -138,7 +149,7 @@ document.addEventListener('DOMContentLoaded',() => {
     }; 
  
     let result;
-  async function mostrarCarrito() {
+   async function mostrarCarrito() {
 
         const modalBody = document.querySelector('.modal .modal-body');
         const cartId = getQueryParam('cartId');
@@ -160,6 +171,10 @@ document.addEventListener('DOMContentLoaded',() => {
   
     try {
       const response = await fetch(`/carts/${cartId}`, options);
+      if (!response.ok) {
+        throw new Error(`Solicitud fallida con estado ${response.status}`);
+      }
+  
        result = await response.json();
   
       console.log('productos agregados al carrito y mostrados en el front', result.payload.products);
@@ -242,9 +257,9 @@ document.addEventListener('DOMContentLoaded',() => {
         console.log('La respuesta JSON no contiene productos válidos');
       }
     } catch (error) {
-      throw error;
+     console.error('Error en la solicitud:', error);
     }
-  }
+  } 
 
   //guardando en el local storage los productos ingresados al carrito
   function guardaLocalStorage() {

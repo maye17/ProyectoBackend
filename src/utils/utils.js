@@ -28,22 +28,3 @@ const storage = multer.diskStorage({
 const uploader = multer({storage});
 
 module.exports = uploader ;
-
-
-
-/*     destination:(req,file,cb)=>{
-        cb(null, path.join(__dirname , "/public"));
-    },
-    filename: ((req,file,cb)=>{
-        cb(null, Date.now() + "-" +file.originalname )
-    }) */
-
-    /*     destination: (req, file, cb) => {
-        
-        const documentsPath = path.join(__dirname,'..', 'public','documents'); 
-        cb(null, documentsPath);
-    },
-    filename: (req, file, cb) => {
-        // Utilizar el nombre de archivo original
-        cb(null, file.originalname); 
-    }, */

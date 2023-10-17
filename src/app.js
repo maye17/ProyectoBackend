@@ -2,9 +2,6 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const app = express();
-//const port =8080;
-/* const ProductManager = require("./dao/ProductManager.js");
-const productos = new ProductManager ("productos.json"); */
 const productsRouter = require("./routes/products.api.router");
 const cartsRouter = require("./routes/cartsapi.router.js");
 const { Server } = require("socket.io");
@@ -32,15 +29,19 @@ const mailRouter = require("./routes/mail.api.router");
 const sendMail = require("./routes/mail.router");
 const bodyParser = require('body-parser');
 console.log(config)
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swaggerConfig');
+const addLoggers = require("./utils/logger");
+const loggerRouter = require("./routes/logger.router");
 
 const port = config.port;
+
 
 
 //DEFINIENDO EL SERVER
 const httpServer= app.listen(port,()=>{
     console.log(`server listening  http://localhost:${port}`);
 })
-
 
 
 socketServer(httpServer);
@@ -57,6 +58,8 @@ app.engine('handlebars',handlebars.engine());
 app.set("view engine", "handlebars");
 app.set("views", "views");
 
+
+
 // session
 
 
@@ -69,25 +72,21 @@ app.use(
     //cookie: { sameSite: 'strict' },
 })
 )
-/* app.use(
-    session({
-
-        
-      store: MongoStore.create({ mongoUrl: 'mongodb+srv://maye_17:Z43IROGnWaS5mLn0@ecommerce.dhbbfye.mongodb.net/ecommerce?//retryWrites=true&w=majority', ttl: 7200 }),
-      secret: 'un-re-secreto',
-      resave: true,
-      saveUninitialized: true,
-    })
-  ); */
 
 // PASSPORT
 iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+//SWAGGER
+
+app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Rutas api JSON
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter); //solo para api del carrito
+
+
 //app.use('/access/Admin', authAdminRouter)
 app.use('/access',authAdminRouter)
     
@@ -112,9 +111,9 @@ app.use('/send', mailRouter)
 app.use("/realTimeProducts", realTimeProducts)
 app.use("/", principalRouter)
 
+//-----------RUTA PARA LOGGER--------------
 
-//Ruta para usuario acomodando en capas
-
+app.use('/loggerTest', loggerRouter)
 
 //---------Ruta para Mocking----------
 
@@ -122,5 +121,3 @@ app.use("/", principalRouter)
 
 
 
- 
-//-------------- solicitando id del pedido------------------------

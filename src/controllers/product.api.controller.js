@@ -131,7 +131,7 @@ class ProductsController {
                 payload: deletedProduct,
             });
         } catch (error) {
-            console.error(error);
+            req.logger.error(`Error in update: ${err.message}`);
             return res.status(400).json({
             status: 'error',
             msg: error.message,
@@ -141,6 +141,7 @@ class ProductsController {
 
     
     async error (req, res) {
+        req.logger.error(`Error in update: ${err.message}`);
         res.status(404).json({ status: "error", msg: "Route not found", data: {} });
     }
 }

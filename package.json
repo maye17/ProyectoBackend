@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "dev": "nodemon -e yaml,js ./src/app.js",
     "test": "nodemon  ./src/test.js",

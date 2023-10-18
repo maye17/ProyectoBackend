@@ -5,8 +5,6 @@ const addLoggers = require('../utils/logger')
  
 const ProductsController  = require("../controllers/product.api.controller.js")
 const productsController = new ProductsController();
-const Factory = require('../DAO/factory.js')
-
 const productsRouter = express.Router();
 
 //obtiene todos los productos

@@ -8,8 +8,9 @@
   },
   "scripts": {
     "dev": "nodemon -e yaml,js ./src/app.js",
-    "test": "nodemon  ./src/test.js",
-    "start": "mocha test/supertest.test.js"
+    "test": "mocha test/supertest.test.js",
+    "start": "node ./src/app.js"
+    
   },
   "repository": {
     "type": "git",

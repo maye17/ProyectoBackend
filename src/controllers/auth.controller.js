@@ -76,46 +76,52 @@ async function renderLoginPage(req, res) {
         });
     }
 } */
-
 async function handleSuccessfulLogin(req, res) {
-    let cartId;
     try {
-        // Obtener el ID de usuario
+        // Crear el carrito para el usuario que inició sesión
         const userId = req.user._id;
         console.log('Entrando a handleSuccessfulLogin', userId);
+        let cartId;
 
-        // Obtener el carrito del usuario (si existe)
-        const cart = await cartControllers.getCartByUserId(userId);
+        if (userId) {
+            try {
+                cartId = await cartControllers.createCartLogin(userId);
+                console.log('usuario al que se le crea el carrito', userId, cartId);
 
-        // Si el usuario no tiene un carrito, créalo
-        if (!cart) {
-            const newCart = await cartControllers.createCartLogin(userId);
-            console.log('Carrito creado para el usuario', userId, newCart);
-            // Usar el ID del carrito recién creado
-            const cartId = newCart._id;
+            } catch (error) {
+                console.error('Error al crear el carrito:', error);
+                return res.status(500).json({
+                    status: "error",
+                    msg: "Error al crear el carrito",
+                    data: {}
+                });
+            }
         } else {
-            // Usar el ID del carrito existente
-            return  cart._id;
+            cartId = await cartControllers.getCartByUserId(userId);
+
+          //  cartId = await cartControllers.getCartById(cartId)
+            console.log('obteniendo id del carrito para el usuario logueado', userId);
         }
 
-        // Controlar si el usuario no es administrador
+        // Controla que el usuario no sea administrador
         if (!req.user.isAdmin) {
-            console.log('Carrito de usuario común', req.user);
-            console.log(`Obteniendo ID del usuario logueado para validar carrito creado en el front, ${userId}`);
-            console.log(`Obteniendo ID del carrito para el usuario logueado, ${cartId}`);
+            console.log('carrito de usuario comun', req.user);
+            const userId = req.user._id;
+            const {_id}= cartId
+            console.log(`obteniendo id del usuario logueado para validar carrito creado en el front, ${userId}`);
+            console.log(`obteniendo id delcarrito para el usuario logueado, ${_id}`);
             
-            // Redirigir al usuario a la página con el cartId
-            return res.redirect(`/access/user/?cartId=${cartId}`);
+            // Redirige al usuario a la página con el cartId
+            return res.redirect(`/access/user/?cartId=${_id}`);
         } else {
-            // Si es administrador, redirigir al usuario a la página principal de administrador
-            console.log('Redirigiendo a la página de administración', req.user);
+            // Si es administrador, redirige al usuario a la página principal de administrador
+            console.log('req.user a user', req.user);
             return res.redirect('/auth/administracion');
         }
     } catch (error) {
-        console.error('Error en el servidor:', error);
-        return res.status(500).json({ 
+        res.status(500).json({ 
             status: "error",
-            msg: "Error en el servidor", 
+            msg: "Error en servidor", 
             data: {}
         });
     }

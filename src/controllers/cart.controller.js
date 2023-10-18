@@ -35,19 +35,15 @@ async getCartByUserId(req,res){
 }
 } */
 
-async getCartByUserId(userId){
+async  getCartByUserId(userId) {
     try {
-        
         const cart = await cartService.getCartByUserId(userId);
-        
-        res.status(200).json({
-            status: 'success',
-            payload: cart
-        });
+        return cart; // Retorna el carrito encontrado
     } catch (error) {
-    throw error;
+        throw error;
+    }
 }
-}
+
 
 async createCartLogin(userId) {
     try {
@@ -61,6 +57,7 @@ async createCartLogin(userId) {
            }
 
          const cartid = await cartService.createCart(userId);
+         console.log('Carrito creado para el usuario', userId, cartid);
             return cartid;
        
     } catch (error) {
@@ -126,6 +123,10 @@ async createCartLogin(userId) {
         console.log('id del producto',productId,'id del carrito', cartId)
 
         //pasar a middleware
+        const cart = await cartService.getCartById(cartId);
+        if (!cart) {
+            return res.status(404).json({ message: 'Carrito no encontrado' });
+        }
           try{
     
        const productAdd = await cartService.addProductToCart(cartId,productId,quantity)

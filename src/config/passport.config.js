@@ -9,7 +9,7 @@ const userModel = require('../models/mongoose/user.model.js');
 const mongoose = require('mongoose')
 const createHash = require('../utils/createHash.js');
 const validatePassword = require("../utils/validatePassword.js")
-const fetch = require('node-fetch');
+//const fetch = require('node-fetch');
 const CartControllers = require("../controllers/cart.controller.js");
 const cartControllers = new CartControllers();
 const iniPassport = () => {

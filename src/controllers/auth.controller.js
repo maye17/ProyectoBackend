@@ -25,7 +25,7 @@ async function renderLoginPage(req, res) {
 
 
 
-async function handleSuccessfulLogin(req, res) {
+/* async function handleSuccessfulLogin(req, res) {
     try {
         // Crear el carrito para el usuario que inició sesión
         const userId = req.user._id;
@@ -75,7 +75,52 @@ async function handleSuccessfulLogin(req, res) {
             data: {}
         });
     }
+} */
+
+async function handleSuccessfulLogin(req, res) {
+    let cartId;
+    try {
+        // Obtener el ID de usuario
+        const userId = req.user._id;
+        console.log('Entrando a handleSuccessfulLogin', userId);
+
+        // Obtener el carrito del usuario (si existe)
+        const cart = await cartControllers.getCartByUserId(userId);
+
+        // Si el usuario no tiene un carrito, créalo
+        if (!cart) {
+            const newCart = await cartControllers.createCartLogin(userId);
+            console.log('Carrito creado para el usuario', userId, newCart);
+            // Usar el ID del carrito recién creado
+            const cartId = newCart._id;
+        } else {
+            // Usar el ID del carrito existente
+            return  cart._id;
+        }
+
+        // Controlar si el usuario no es administrador
+        if (!req.user.isAdmin) {
+            console.log('Carrito de usuario común', req.user);
+            console.log(`Obteniendo ID del usuario logueado para validar carrito creado en el front, ${userId}`);
+            console.log(`Obteniendo ID del carrito para el usuario logueado, ${cartId}`);
+            
+            // Redirigir al usuario a la página con el cartId
+            return res.redirect(`/access/user/?cartId=${cartId}`);
+        } else {
+            // Si es administrador, redirigir al usuario a la página principal de administrador
+            console.log('Redirigiendo a la página de administración', req.user);
+            return res.redirect('/auth/administracion');
+        }
+    } catch (error) {
+        console.error('Error en el servidor:', error);
+        return res.status(500).json({ 
+            status: "error",
+            msg: "Error en el servidor", 
+            data: {}
+        });
+    }
 }
+
 
 async function getCurrentUser (req,res){
     try {

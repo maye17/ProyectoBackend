@@ -13,7 +13,7 @@ const CarritoTotal = document.querySelector('#CarritoTotal');
 
 
 
-ShowLocalStorge()
+//ShowLocalStorge()
 // Función para obtener los parámetros de consulta de la URL
   function getQueryParam(paramName) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -21,11 +21,11 @@ ShowLocalStorge()
 }
 
 // evento que guarda la información cuando se recarga la página, buscando la informaciónen en el local storage en caso de no contener muestra vacío
-document.addEventListener('DOMContentLoaded',() => {
+/* document.addEventListener('DOMContentLoaded',() => {
   result.payload.products = JSON.parse(localStorage.getItem('carrito')) || []; 
   mostrarCarrito();
 })
-
+ */
 
 
 //-----------MOSTRAR DETALLE DEL PRODUCTO-------
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //Mostrar Local Storage
 document.addEventListener('DOMContentLoaded',() => {
-  ShowLocalStorge() || []; 
+ // ShowLocalStorge() || []; 
   mostrarCarrito();
 })
 
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('todo igual')
   }else{
     // El usuario ha iniciado sesión, por lo tanto, muestra el carrito del Local Storage
-    ShowLocalStorge();
+    //ShowLocalStorge();
     mostrarCarrito();
   }
   // Otras acciones a realizar si el usuario no ha iniciado sesión

@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "engines": {
-    "node": "16.x"
+    "node": "18.18.2"
   },
   "scripts": {
     "dev": "nodemon -e yaml,js ./src/app.js",

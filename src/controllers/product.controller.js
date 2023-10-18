@@ -9,7 +9,7 @@ class PrincipalController {
         try {
             const { page } = req.query; // 
             const result = await principalService.getAllProd(page);
-            return res.status(200).render("principal", { products: result.products, pagination: result.pagination });
+            return res.status(200).render("home", { products: result.products, pagination: result.pagination });
             
         } catch (error) {
             if (error instanceof Error) {
@@ -81,8 +81,7 @@ class PrincipalController {
        
         //  console.log(products)
         res.render('user', { userId, products, pagination });
-     //   return res.redirect(`/user/${userId}?page=${page}`);
-       /*    return res.status(200).render('user', { products: products.products, pagination: products.pagination }); */
+
 
         } catch (error) {
           res.status(500).json({ 

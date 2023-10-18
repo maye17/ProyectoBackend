@@ -21,11 +21,11 @@ ShowLocalStorge()
 }
 
 // evento que guarda la información cuando se recarga la página, buscando la informaciónen en el local storage en caso de no contener muestra vacío
-/* document.addEventListener('DOMContentLoaded',() => {
+document.addEventListener('DOMContentLoaded',() => {
   result.payload.products = JSON.parse(localStorage.getItem('carrito')) || []; 
   mostrarCarrito();
 })
- */
+
 
 
 //-----------MOSTRAR DETALLE DEL PRODUCTO-------
@@ -60,9 +60,10 @@ buttonViewDetail.forEach((button) => {
 document.addEventListener("DOMContentLoaded", function () {
   const userId = document.querySelector('#idUser');
 
- /*  if(!userId){
-    console.log('muestro pantalla principal')
-  } */
+  if(!userId){
+    console.log('muestro pantalla principal');
+    window.location.href = '/auth/login';
+  }
 
   const UserID = userId.getAttribute('data-user-id');
   const botonesAgregarCarrito = document.querySelectorAll(".Add-Cart");
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded',() => {
   mostrarCarrito();
 })
 
-/* document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const userId = document.querySelector('#idUser');
   //const UserID = userId.getAttribute('data-user-id');
   if (!userId) {
@@ -138,18 +139,118 @@ document.addEventListener('DOMContentLoaded',() => {
     mostrarCarrito();
   }
   // Otras acciones a realizar si el usuario no ha iniciado sesión
-}); */
+});
 
 
       // -----Mostrar producto del carrito en el modal-------- 
       let prevPageURL;
     let  pagination = {
-      prevPage: 0, // Asigna el valor adecuado
-      limit: 4,   // Asigna el valor adecuado
+      prevPage: 0, 
+      limit: 4,   
     }; 
  
     let result;
-   async function mostrarCarrito() {
+
+
+    async function mostrarCarrito() {
+      const modalBody = document.querySelector('.modal .modal-body');
+      const cartId = getQueryParam('cartId');
+      let result;
+    
+      if (cartId) {
+        // Incluye cartId en la URL solo si tiene un valor válido
+        prevPageURL = `/access/user/?cartId=${cartId}&page=${pagination.prevPage}&limit=${pagination.limit}`;
+        console.log('url de paginado del carrito', prevPageURL);
+      }
+    
+      console.log('ID del carro', cartId);
+      const options = {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      }
+    
+      try {
+        const response = await fetch(`/carts/${cartId}`, options);
+        if (!response.ok) {
+          throw new Error(`Solicitud fallida con estado ${response.status}`);
+        }
+    
+        result = await response.json();
+        
+        // Limpiar el contenido existente en el modal
+        modalBody.innerHTML = "";
+    
+        if (result && result.payload && result.payload.products && Array.isArray(result.payload.products) && result.payload.products.length > 0) {
+          // Iterar a través de todos los productos en el carrito y mostrarlos
+          result.payload.products.forEach((product) => {
+            // Utilizar las propiedades reales del objeto product
+            const thumbnailModal = product.productId.thumbnail;
+            const titleModal = product.productId.title;
+            const priceModal = product.productId.price;
+            const quantityModal = product.quantity;
+            const DeletedProductId = product.productId._id;
+    
+            // Crear un elemento para cada producto y agregarlo al modal
+            const productElement = document.createElement('div');
+            productElement.classList.add('modal-contenedor');
+            productElement.innerHTML = `
+              <div>
+                <img class="img-fluid img-carrito" src="${thumbnailModal}">
+              </div>
+              <div>
+                <p>Producto: ${titleModal}</p>
+                <p>Precio: ${priceModal}</p>
+                <h6>Cantidad:</h6>
+                <p class="cantidad" data-product-id="${DeletedProductId}">Cantidad:${quantityModal}</p>
+                <p>Id:${DeletedProductId}</p>
+                <button class="delete-product btn btn-danger" data-deleted-id="${DeletedProductId}" >Borrar</button>
+              </div>
+            `;
+    
+            // Para eliminar un producto
+            const BotonDeleteProduct = productElement.querySelectorAll('.delete-product[data-deleted-id]');
+    
+            // Función para eliminar
+            BotonDeleteProduct.forEach((deleteButton) => {
+              deleteButton.addEventListener('click', function () {
+                const DeletedProductId = this.getAttribute('data-deleted-id');
+                DeletedProduct(DeletedProductId);
+              });
+            });
+    
+            modalBody.appendChild(productElement);
+          });
+    
+          // Calcular la cantidad total de productos en el carrito
+          const totalQuantity = result.payload.products.reduce((acc, product) => {
+            return acc + product.quantity;
+          }, 0);
+    
+          // Actualizar la cantidad total en CarritoTotal
+          CarritoTotal.innerText = totalQuantity;
+    
+          // Calcular el precio total de los productos en el carrito
+          const totalPrice = result.payload.products.reduce((acc, product) => {
+            return acc + product.productId.price;
+          }, 0);
+    
+          // Actualizar el precio total en el modal
+          precioTotal.innerText = divisa + totalPrice;
+          // Guardar en el local storage
+          guardaLocalStorage();
+        } else {
+          // No hay productos válidos en el carrito, muestra un mensaje de carrito vacío
+          modalBody.innerHTML = `
+            <p class="text-center text-primary">El carrito está vacío</p>`;
+        }
+      } catch (error) {
+        console.error('Error en la solicitud:', error);
+      }
+    }
+    
+/*    async function mostrarCarrito() {
 
         const modalBody = document.querySelector('.modal .modal-body');
         const cartId = getQueryParam('cartId');
@@ -176,7 +277,8 @@ document.addEventListener('DOMContentLoaded',() => {
       }
   
        result = await response.json();
-  
+  if (result && result.payload && result.payload.products && Array.isArray(result.payload.products)) {
+
       console.log('productos agregados al carrito y mostrados en el front', result.payload.products);
   
       // Limpiar el contenido existente en el modal
@@ -256,10 +358,15 @@ document.addEventListener('DOMContentLoaded',() => {
       } else {
         console.log('La respuesta JSON no contiene productos válidos');
       }
+    } else {
+      console.log('La respuesta JSON no contiene productos válidos');
+    }
+    
+    
     } catch (error) {
      console.error('Error en la solicitud:', error);
     }
-  } 
+  }  */
 
   //guardando en el local storage los productos ingresados al carrito
   function guardaLocalStorage() {

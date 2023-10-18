@@ -117,7 +117,7 @@ class CartService {
             // Buscar el carrito por su ID
             const cartUser = await CartModel.findById(cartId);
                     
-            console.log('ID del carrito', cartUser);
+            console.log('ID del carrito desde el backend para usuario', cartUser);
     
             if (!cartUser) {
                 throw new Error('Carrito no encontrado');

@@ -4,7 +4,6 @@ const handlebars = require("express-handlebars");
 const app = express();
 const productsRouter = require("./routes/products.api.router");
 const cartsRouter = require("./routes/cartsapi.router.js");
-const { Server } = require("socket.io");
 const realTimeProducts = require("./routes/realtimeproducts.js");
 const authRouter = require("./routes/auth.router.js")
 const sessionsRouter = require("./routes/sessions.router.js");
@@ -27,11 +26,8 @@ const cartRouter = require("./routes/cart.router.js")
 const config = require('../src/config/config.js');
 const mailRouter = require("./routes/mail.api.router");
 const sendMail = require("./routes/mail.router");
-const bodyParser = require('body-parser');
-console.log(config)
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swaggerConfig');
-const addLoggers = require("./utils/logger");
 const loggerRouter = require("./routes/logger.router");
 
 const port = config.port;

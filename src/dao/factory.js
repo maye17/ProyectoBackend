@@ -1,7 +1,7 @@
 const config = require('../config/config');
 const connectMongo = require('../utils/mongo');
-const FactoryMongo = require('../services/product.api.service');
-const FactoryMemory = require('../models/memory/product.memory');
+const FactoryMongo = require('../services/product.api.service.js');
+const FactoryMemory = require('../models/memory/product.memory.js');
 
 let Factory;
 

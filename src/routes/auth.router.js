@@ -1,11 +1,10 @@
 const express = require("express");
-
 const isAdmin = require('../middlewares/authAdmin')
 const isUser = require('../middlewares/authUser')
 const passport = require('passport');
 const UserProfileController = require('../controllers/user.controler.js')
 const controllerUser  = new UserProfileController();
-const authController = require("../controllers/auth.controller.js");
+const authController = require('../controllers/auth.controller');
 const UserService = require("../services/user.service.js");
 const serviceUser = new UserService();
 

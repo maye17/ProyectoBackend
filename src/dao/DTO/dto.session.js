@@ -14,4 +14,4 @@ class UserSessionDTO {
     }
   }
   
-  module.exports = UserSessionDTO;
+  module.export = UserSessionDTO;

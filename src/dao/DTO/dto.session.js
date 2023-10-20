@@ -1,4 +1,7 @@
+
 //removiendo contenido no necesario
+const fs = require ("fs");
+
 
 class UserSessionDTO {
     constructor(user) {
@@ -14,4 +17,4 @@ class UserSessionDTO {
     }
   }
   
-  module.export = UserSessionDTO;
+  module.exports = UserSessionDTO;

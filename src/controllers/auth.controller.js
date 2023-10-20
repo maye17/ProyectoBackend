@@ -3,7 +3,7 @@ const cartControllers = new CartControllers();
 
 const PrincipalController = require('../controllers/product.controller.js')
 const principalControllers = new PrincipalController()
-const UserSessionDTO = require('../DAO/DTO/dto.session.js')
+const UserSessionDTO = require('../dao/dto/dto.session.js')
 const userSessionDTO = new UserSessionDTO
 const UserService = require('../services/user.service.js');
 const serviceUser = new UserService();

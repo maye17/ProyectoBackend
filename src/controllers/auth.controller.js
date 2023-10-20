@@ -2,7 +2,7 @@ const CartControllers = require("../controllers/cart.controller.js");
 const cartControllers = new CartControllers();
 const PrincipalController = require('../controllers/product.controller.js')
 const principalControllers = new PrincipalController()
-const UserSessionDTO = require('../dao/dto/dto.session.js')
+const UserSessionDTO = require('../dao/dto/dto.session')
 const UserService = require('../services/user.service.js');
 const serviceUser = new UserService();
 // Importa el controlador del carrito

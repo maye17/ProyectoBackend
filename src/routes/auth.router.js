@@ -5,13 +5,11 @@ const isUser = require('../middlewares/authUser')
 const passport = require('passport');
 const UserProfileController = require('../controllers/user.controler.js')
 const controllerUser  = new UserProfileController();
-const authRouter = express.Router();
 const authController = require("../controllers/auth.controller.js");
 const UserService = require("../services/user.service.js");
-const isLogin = require("../middlewares/authLogin");
 const serviceUser = new UserService();
 
-
+const authRouter = express.Router();
 //CONTROL DE ACCESO DE USUARIOS
 authRouter.get("/user", isUser, controllerUser.getUserAll);
 authRouter.get("/administracion", isAdmin, controllerUser.getAdmin);   

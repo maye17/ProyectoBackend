@@ -6,7 +6,7 @@ const PrincipalController = require('../controllers/product.controller.js');
 const principalControllers = new PrincipalController();
 const UserService = require("../services/user.service.js");
 const serviceUser = new UserService();
-const UserSessionDTO = require("../dao/dto/dto.session.js");
+//const UserSessionDTO = require('../dao/dto/dto.session.js')
 const isUser = require('../middlewares/authUser.js');
 
  // Importa el controlador de productos

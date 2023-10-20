@@ -3,7 +3,6 @@ const express = require('express');
 const uploader = require('../utils/utils.js');
 const addLoggers = require('../utils/logger')
 const ProductsController = require('../controllers/product.api.controller.js')
-const productsController = require('../controllers/product.api.controller.js')
 const productsController = new ProductsController();
 const productsRouter = express.Router();
 

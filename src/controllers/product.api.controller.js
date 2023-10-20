@@ -2,7 +2,7 @@ const FactoryMongo = require('../services/product.api.service');
 const factoryMongo = new FactoryMongo();
 const FactoryNew = require('../dao/factory');
 const Loggers = require('../utils/logger')
-const factory = new FactoryNew();
+//const factory = new FactoryNew();
 
 class ProductsController {
 
@@ -12,7 +12,7 @@ class ProductsController {
         try {
             
             const productData = req.body;
-            const savedProduct = await factory.addProduct(productData);
+            const savedProduct = await FactoryNew.addProduct(productData);
              
             return res.status(201).json({
                 status: 'success',
@@ -32,7 +32,7 @@ class ProductsController {
 
     async getAll (req,res) {
         try {
-            const products = await factory.getAllProducts();
+            const products = await FactoryNew.getAllProducts();
     
             return res.status(200).json({
                 status: "OK",
@@ -56,7 +56,7 @@ class ProductsController {
             const id = req.params.pid;
             // const dataId = await productos.getProductById(parseInt(id)); 
     
-            const productId = await factory.getProductById(id); // Cambiado a this.persistence
+            const productId = await FactoryNew.getProductById(id); // Cambiado a this.persistence
 
             console.log('producto',productId);
             res.status(200).json(productId);
@@ -87,10 +87,10 @@ class ProductsController {
         }
 
 
-            const productos = await factory.getProductById(id);
+            const productos = await FactoryNew.getProductById(id);
 
             // Llama al servicio de actualización de productos
-            const result = await factory.updateProduct(id, changeProduct);
+            const result = await FactoryNew.updateProduct(id, changeProduct);
     
     
            if (result) {
@@ -118,7 +118,7 @@ class ProductsController {
     async deleteOne  (req, res) {
         try {
             const productId = req.params.id;
-            const deletedProduct = await factory.deleteProduct(productId); // Cambiado a this.persistence
+            const deletedProduct = await FactoryNew.deleteProduct(productId); // Cambiado a this.persistence
             if (!deletedProduct) {
                 return res.status(404).json({
                     status: 'error',

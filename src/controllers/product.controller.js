@@ -45,11 +45,11 @@ class PrincipalController {
       }
 
 
-          const productos = await factory.getProductById(id);
+          const productos = await principalService.getProductById(id);
   
           console.log('encontrar producto para actualizar', productos)
           // Llama al servicio de actualización de productos
-          const result = await factory.updateProduct(id, changeProduct);
+          const result = await principalService.updateProduct(id, changeProduct);
   
           console.log('encontrando en producto para actualizar api', result)
  

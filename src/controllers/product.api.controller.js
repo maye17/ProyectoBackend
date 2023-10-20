@@ -1,8 +1,8 @@
 const FactoryMongo = require('../services/product.api.service');
 const factoryMongo = new FactoryMongo();
-const Factory = require('../DAO/factory.js');
+const FactoryNew = require("../../src/DAO/factory");
 const Loggers = require('../utils/logger')
-const factory = new Factory();
+const factory = new FactoryNew();
 
 class ProductsController {
 

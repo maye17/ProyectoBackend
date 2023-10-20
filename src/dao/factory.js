@@ -3,20 +3,20 @@ const connectMongo = require('../utils/mongo');
 const FactoryMongo = require('../services/product.api.service.js');
 const FactoryMemory = require('../models/memory/product.memory.js');
 
-let Factory;
+let FactoryNew;
 
 switch (config.persistence) {
     case 'MONGO':
         console.log('connect mongo');
         connectMongo();
-        Factory = FactoryMongo;
+        FactoryNew = FactoryMongo;
         break;
     case 'MEMORY':
         console.log('Persistence with Memory');
-        Factory = FactoryMemory;
+        FactoryNew = FactoryMemory;
         break;
     default:
         break;
 }
 
-module.exports = Factory;
+module.exports = FactoryNew;

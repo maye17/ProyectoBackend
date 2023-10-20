@@ -8,9 +8,9 @@
     "node": ">=16 <19"
   },
   "scripts": {
-    "dev": "nodemon -e yaml,js ./src/app.js",
+    "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
     "test": "mocha test/supertest.test.js",
-    "start": "node ./src/app.js"
+    "start": "node ./src/app.js --mode PRODUCTION"
     
   },
   "repository": {

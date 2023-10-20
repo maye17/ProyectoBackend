@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 
-program.option('--mode <mode>','Modo de trabajo', 'DEVELOPMENT');
+program.option('--mode <mode>','Modo de trabajo', 'PRODUCTION');
 //program.option("-d", "Variables para debug", false)
 program.parse();
 
